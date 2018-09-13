@@ -22,3 +22,7 @@ storage/framework/cache/
 storage/framework/sessions/
 
 storage/framework/views/
+
+_ide_helper\.php
+
+composer\.lock
