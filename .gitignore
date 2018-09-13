@@ -17,12 +17,6 @@ yarn-error.log
 /public/images
 /public/mix-manifest.json
 
-storage/framework/cache/
-
-storage/framework/sessions/
-
-storage/framework/views/
-
 _ide_helper\.php
 
 composer\.lock
