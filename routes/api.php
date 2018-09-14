@@ -13,8 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return response()->json([
-        "status" => "working"
-    ]);
-});
+
+Route::get('/', 'Api\ApiConfigController@version');

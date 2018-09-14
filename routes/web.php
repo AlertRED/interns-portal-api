@@ -6,6 +6,4 @@
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return "working";
-});
+Route::get('/', 'Api\ApiConfigController@version');

@@ -20,5 +20,10 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
      |-----------------------------------------------------------------------
      */
 
-    Route::get('/intern/show/{id}', 'Intern\InternsController@getIntern')->name('intern.show');
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function ()
+    {
+        Route::get('/user/{id}/get', 'User\UsersController@getUser');
+    });
 });
