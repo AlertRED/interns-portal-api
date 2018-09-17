@@ -5,8 +5,6 @@ namespace App\Http\Controllers\V1\User;
 use App\Http\Transformers\V1\User\UserTransformer;
 use App\User;
 use App\Http\Controllers\Controller;
-use Hash;
-use Spatie\Fractal\Fractal;
 
 class UsersController extends Controller
 {
@@ -26,7 +24,9 @@ class UsersController extends Controller
 
         return response()->json([
             "success" => true,
-            "user" => Fractal::create($user, new UserTransformer())
+            "data" => [
+                "user" => UserTransformer::transformItem($user)
+            ]
         ], 200);
     }
 }

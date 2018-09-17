@@ -7,6 +7,7 @@
 
 namespace App\Support\Auth;
 
+use App\Support\Enums\UserType;
 use App\User;
 
 class UserAuth

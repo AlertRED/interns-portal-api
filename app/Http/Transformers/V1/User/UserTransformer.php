@@ -9,6 +9,7 @@ namespace App\Http\Transformers\V1\User;
 
 use App\User;
 use League\Fractal\TransformerAbstract;
+use Spatie\Fractalistic\ArraySerializer;
 
 class UserTransformer extends TransformerAbstract
 {
@@ -26,5 +27,18 @@ class UserTransformer extends TransformerAbstract
             'last_name' => $user->last_name,
             'register_date' => (string) $user->created_at
         ];
+    }
+
+    /**
+     * @param User $user
+     * @param $resourceKey
+     * @return \Spatie\Fractal\Fractal
+     */
+    public static function transformItem(User $user, $resourceKey = null)
+    {
+        return fractal()
+            ->item($user, new UserTransformer())
+            ->serializeWith(new ArraySerializer())
+            ->withResourceName($resourceKey);
     }
 }

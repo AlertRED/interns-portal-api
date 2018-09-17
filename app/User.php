@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -35,12 +34,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLogin($value)
+ * @property string|null $course
+ * @property string $role
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCourse($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRole($value)
  */
 class User extends Authenticatable
 {
     use Notifiable;
 
     protected $fillable = [
-        "login", "email", "first_name", "last_name", "password", "api_token"
+        "login", "email", "course", "role", "first_name", "last_name", "password", "api_token"
     ];
 }
