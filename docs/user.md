@@ -1,6 +1,6 @@
-# Auth API
+# User API
 
-## Login
+## Get user
 **Endpoint:** /api/v1/user/{id}/get?api_token=someToken
 
 **User group access:** Employee only
