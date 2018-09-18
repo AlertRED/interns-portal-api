@@ -8,6 +8,9 @@
 
 namespace App\Console\Commands\Auth;
 
+use App\Models\Auth\RegistrationKey;
+use App\Models\Internship\InternshipCourse;
+use App\Support\Enums\UserType;
 use Illuminate\Console\Command;
 
 /**
@@ -30,8 +33,42 @@ class GenRegisterKey extends Command
      */
     protected $description = 'Генерация ключа для регистрации вручную';
 
-    public function handle() {
-        $linkPrefix = "/register?";
-        $this->info("ok");
+    public function handle()
+    {
+        $this->info("Выберите роль:");
+        $allowedRoles = [
+            UserType::getKey(UserType::User),
+            UserType::getKey(UserType::Employee)
+        ];
+
+        foreach ($allowedRoles as $key => $allowedRole) {
+            $this->info($key . " : " . $allowedRole);
+        }
+        $selectedRoleKey = intval($this->ask("Введите число:"));
+        if (!isset($allowedRoles[$selectedRoleKey])) {
+            dd("Неверный role key");
+        }
+
+        $this->info("Выберите поток");
+        foreach (InternshipCourse::all() as $course) {
+            $this->info($course->id . " : " . $course->course);
+        }
+        $selectedCourseId = intval($this->ask("Введите id:"));
+
+        $selectedCourse = InternshipCourse::find($selectedCourseId);
+        if (!$selectedCourse) {
+            dd("Выбранный курс не существует");
+        }
+
+        $registerKey = RegistrationKey::create([
+            "key" => str_random(20),
+            "role" => $allowedRoles[$selectedRoleKey],
+            "course" => $selectedCourse->course
+        ]);
+
+        $registerLink = url("/register?") . http_build_query([
+            "register_key" => $registerKey->key
+                ]);
+        $this->info("Register Link:\n" . $registerLink);
     }
 }

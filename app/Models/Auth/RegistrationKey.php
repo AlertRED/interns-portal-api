@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereIsUsed($value)
  * @property string $role
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereRole($value)
+ * @property string|null $course
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereCourse($value)
  */
 class RegistrationKey extends Model
 {
@@ -36,4 +38,9 @@ class RegistrationKey extends Model
      * @var string
      */
     protected $table = "registration_keys";
+
+    /**
+     * @var array
+     */
+    protected $guarded = [];
 }

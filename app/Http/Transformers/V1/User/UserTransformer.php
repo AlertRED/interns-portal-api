@@ -25,6 +25,8 @@ class UserTransformer extends TransformerAbstract
             'login' => $user->login,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
+            'course' => $user->course,
+            'role' => $user->role,
             'register_date' => (string) $user->created_at
         ];
     }

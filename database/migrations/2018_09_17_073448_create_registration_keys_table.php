@@ -17,8 +17,9 @@ class CreateRegistrationKeysTable extends Migration
             $table->increments('id');
             $table->string("key", 50)->nullable(false);
             $table->string("role", 20)->nullable(false)->default("User");
+            $table->string("course", 20)->nullable(true);
             $table->boolean("is_used")->nullable(false)->default(false);
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->nullable()->unsigned()->default(null);
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade')
