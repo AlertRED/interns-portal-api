@@ -1,7 +1,7 @@
 # User API
 
 ## Get user
-**Endpoint:** /api/v1/user/{id}/get?api_token=someToken
+**Endpoint(GET):** /api/v1/user/{id}/get?api_token=someToken
 
 **User group access:** Employee only
 
