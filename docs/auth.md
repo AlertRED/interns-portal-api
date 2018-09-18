@@ -1,7 +1,7 @@
 # Auth API
 
 ## Login
-**Endpoint:** /api/v1/login
+**Endpoint(POST):** /api/v1/login
 
 Params list:
 + login
@@ -26,7 +26,7 @@ Success response:
 ```
 
 ## Register
-**Endpoint:** /api/v1/register
+**Endpoint(POST):** /api/v1/register
 
 Example register link: http://internsportal.test/register?register_key=FWt4hI1tdiaoDaAtjP40
 
