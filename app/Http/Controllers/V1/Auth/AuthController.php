@@ -28,7 +28,7 @@ class AuthController
     public function login(Request $request)
     {
         $request->validate([
-            "login" => "required|string|min:3|max:255",
+            "login"    => "required|string|min:3|max:255",
             "password" => "required|string|min:4|max:50",
         ]);
 
@@ -60,13 +60,14 @@ class AuthController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
-            "login" => "required|string|unique:users,login|min:3|max:255",
-            "email" => "required|email|unique:users,email|max:255",
-            "first_name" => "required|string|min:3|max:100",
-            "last_name" => "required|string|min:3|max:100",
-            "password" => "required|string|min:4|max:50",
+            "login"        => "required|string|unique:users,login|min:3|max:255",
+            "email"        => "required|email|unique:users,email|max:255",
+            "first_name"   => "required|string|min:3|max:100",
+            "last_name"    => "required|string|min:3|max:100",
+            "password"     => "required|string|min:4|max:50",
             "register_key" => "required|string|min:4|max:50"
         ]);
 
@@ -90,9 +91,9 @@ class AuthController
             "login"      => $request->login,
             "email"      => $request->email,
             "first_name" => $request->first_name,
-            "last_name" => $request->last_name,
-            "course" => $registrationKey->course,
-            "role" => $registrationKey->role,
+            "last_name"  => $request->last_name,
+            "course"     => $registrationKey->course,
+            "role"       => $registrationKey->role,
             "api_token"  => str_random(30),
             "password"   => Hash::make('1234')
         ]);
@@ -104,9 +105,25 @@ class AuthController
 
         return response()->json([
             "success" => true,
-            "data" => [
+            "data"    => [
                 "api_token" => $user->api_token
             ]
         ], 200);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function checkApiToken(Request $request)
+    {
+        $request->validate([
+            "api_token" => "required|string|min:4|max:50"
+        ]);
+
+        $result = User::where("api_token", $request->api_token)->first() !== null;
+        return response()->json([
+            "success" => $result,
+        ], $result ? 200 : 401);
     }
 }
