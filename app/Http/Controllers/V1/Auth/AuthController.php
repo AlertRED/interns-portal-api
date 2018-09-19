@@ -95,7 +95,7 @@ class AuthController
             "course"     => $registrationKey->course,
             "role"       => $registrationKey->role,
             "api_token"  => str_random(30),
-            "password"   => Hash::make('1234')
+            "password"   => Hash::make($request->password)
         ]);
 
         $registrationKey->update([
