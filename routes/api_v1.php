@@ -16,6 +16,8 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
     Route::post('/login', 'Auth\AuthController@login');
     Route::post('/register', 'Auth\AuthController@register');
 
+    Route::get('/check_api_token', 'Auth\AuthController@checkApiToken');
+
     /*
      |-----------------------------------------------------------------------
      | Employee only routes
