@@ -10,7 +10,6 @@
 namespace App\Http\Controllers\V1\Auth;
 
 use App\Models\Auth\RegistrationKey;
-use App\Support\Enums\UserType;
 use App\User;
 use Hash;
 use Illuminate\Http\Request;
