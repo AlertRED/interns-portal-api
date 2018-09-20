@@ -1,4 +1,4 @@
-# My (current user) API
+# Me (current user) API
 
 ## Get my profile info
 **Endpoint(GET):** /api/v1/me/profile_info/get?api_token=someToken
