@@ -31,8 +31,8 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
         'prefix' => 'me', 'middleware' => ['auth:api']
     ], function ()
     {
-        Route::get('/profile_info/get', 'User\UsersController@getMyProfileInfo');
-        Route::put('/profile_info/edit', 'User\UsersController@editMyProfileInfo');
+        Route::get('/profile_info', 'User\UsersController@getMyProfileInfo');
+        Route::put('/profile_info', 'User\UsersController@editMyProfileInfo');
     });
 
     /*
@@ -45,6 +45,6 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
         'middleware' => ['auth:api', 'employee-only']
     ], function ()
     {
-        Route::get('/user/{id}/get', 'User\UsersController@getUser');
+        Route::get('/user/{id}', 'User\UsersController@getUser');
     });
 });
