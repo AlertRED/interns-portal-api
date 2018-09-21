@@ -1,7 +1,7 @@
 # Me (current user) API
 
 ## Get my profile info
-**Endpoint(GET):** /api/v1/me/profile_info/get?api_token=someToken
+**Endpoint(GET):** /api/v1/me/profile_info?api_token=someToken
 
 Params list:
 + api_token*
@@ -33,7 +33,7 @@ Success response:
 ```
 
 ## Edit my profile info
-**Endpoint(PUT):** /api/v1/me/profile_info/edit?api_token=someToken
+**Endpoint(PUT):** /api/v1/me/profile_info?api_token=someToken
 
 Params list:
 + api_token*
