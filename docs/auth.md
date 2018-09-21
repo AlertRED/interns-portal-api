@@ -63,7 +63,7 @@ Success response:
 ```
 
 ## Check token
-**Endpoint(POST):** /api/v1/check_api_token?api_token=someToken
+**Endpoint(GET):** /api/v1/check_api_token?api_token=someToken
 
 Params list: (* - required)
 + api_token*
