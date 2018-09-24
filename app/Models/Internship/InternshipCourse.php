@@ -26,5 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InternshipCourse extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = "internship_courses";
 }

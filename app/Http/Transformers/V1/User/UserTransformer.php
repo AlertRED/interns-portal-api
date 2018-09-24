@@ -8,6 +8,7 @@
 namespace App\Http\Transformers\V1\User;
 
 use App\User;
+use Illuminate\Support\Collection;
 use League\Fractal\TransformerAbstract;
 use Spatie\Fractalistic\ArraySerializer;
 
@@ -40,6 +41,19 @@ class UserTransformer extends TransformerAbstract
     {
         return fractal()
             ->item($user, new UserTransformer())
+            ->serializeWith(new ArraySerializer())
+            ->withResourceName($resourceKey);
+    }
+
+    /**
+     * @param Collection $users
+     * @param $resourceKey
+     * @return \Spatie\Fractal\Fractal
+     */
+    public static function transformCollection(Collection $users, $resourceKey = null)
+    {
+        return fractal()
+            ->collection($users, new UserTransformer())
             ->serializeWith(new ArraySerializer())
             ->withResourceName($resourceKey);
     }

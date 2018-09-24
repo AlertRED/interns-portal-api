@@ -43,7 +43,13 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $fillable = [
-        "login", "email", "course", "role", "first_name", "last_name", "password", "api_token"
-    ];
+    /**
+     * @var array
+     */
+    protected $fillable = [];
+
+    /**
+     * @var array
+     */
+    protected $guarded = [];
 }

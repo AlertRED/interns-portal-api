@@ -52,7 +52,7 @@ class AuthController
             "data"    => [
                 "api_token" => $user->api_token
             ]
-        ], 200);
+        ]);
     }
 
     /**
@@ -107,7 +107,7 @@ class AuthController
             "data"    => [
                 "api_token" => $user->api_token
             ]
-        ], 200);
+        ]);
     }
 
     /**
