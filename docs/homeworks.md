@@ -107,6 +107,7 @@ Success response:
 + number
 + course_id (id in internship_courses table)
 + deadline (ex. "2018-09-24 14:46:41")
++ url
 
 Success response:
 ```json
