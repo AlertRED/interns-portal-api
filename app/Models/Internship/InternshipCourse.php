@@ -30,4 +30,9 @@ class InternshipCourse extends Model
      * @var string
      */
     protected $table = "internship_courses";
+
+    /**
+     * @var array
+     */
+    protected $guarded = ["id"];
 }

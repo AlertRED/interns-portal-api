@@ -21,7 +21,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
 
     /*
      |-----------------------------------------------------------------------
-     | User only routes
+     | User routes
      |-----------------------------------------------------------------------
      */
 
@@ -33,6 +33,9 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
     {
         Route::get('/profile_info', 'User\UsersController@getMyProfileInfo');
         Route::patch('/profile_info', 'User\UsersController@editMyProfileInfo');
+
+
+        Route::get('/homeworks', 'Homework\InternHomeworkController@getMyHomeworks');
     });
 
     /*
@@ -45,6 +48,9 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
         'middleware' => ['auth:api', 'employee-only']
     ], function ()
     {
+        /* Courses */
+        Route::get('/courses', 'Course\InternshipCoursesController@all');
+
         /* Users */
         Route::get('/interns', 'User\UsersController@getInterns');
 
@@ -53,9 +59,10 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
         /* Homeworks */
 
         Route::get('/homeworks', 'Homework\HomeworkController@getAll');
-        Route::post('/homework', 'Homework\HomeworkController@new');
 
+        Route::post('/homework', 'Homework\HomeworkController@new');
         Route::get('/homework/{id}', 'Homework\HomeworkController@get');
         Route::patch('/homework/{id}', 'Homework\HomeworkController@edit');
+        Route::delete('/homework/{id}', 'Homework\HomeworkController@delete');
     });
 });

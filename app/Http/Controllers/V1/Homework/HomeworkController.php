@@ -11,7 +11,9 @@ namespace App\Http\Controllers\V1\Homework;
 use App\Http\Controllers\Controller;
 use App\Http\Transformers\V1\Homework\HomeworkTransformer;
 use App\Models\Homework\Homework;
+use App\Models\Homework\InternHomework;
 use App\Models\Internship\InternshipCourse;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -66,6 +68,17 @@ class HomeworkController extends Controller
             "course_id" => $request->course_id,
             "deadline" => Carbon::parse($request->deadline)
         ]);
+
+        $course = InternshipCourse::find($request->course_id);
+
+        $interns = User::where("course", $course->course)->get();
+
+        foreach ($interns as $intern) {
+            InternHomework::firstOrCreate([
+                "user_id" => $intern->id,
+                "homework_id" => $homework->id,
+            ]);
+        }
 
         return response()->json([
             "success" => true,
@@ -125,6 +138,25 @@ class HomeworkController extends Controller
             "data"    => [
                 "homework" => HomeworkTransformer::transformItem($homework)
             ]
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function delete($id) {
+        $homework = Homework::find($id);
+
+        if (!$homework) {
+            abort(404);
+        }
+
+        $homework->delete();
+
+        return response()->json([
+            "success" => true,
         ]);
     }
 }

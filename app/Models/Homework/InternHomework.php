@@ -8,7 +8,9 @@
 
 namespace App\Models\Homework;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Homework\InternHomework
@@ -42,4 +44,32 @@ class InternHomework extends Model
      * @var array
      */
     protected $guarded = ["id"];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function homework()
+    {
+        return $this->hasOne("App\Models\Homework\Homework", "id", "homework_id");
+    }
+
+    /**
+     * @param Collection $items
+     * @return Collection
+     */
+    public static function filterActive(Collection $items) {
+       return $items->filter(function ($item) {
+           return Carbon::now() < Carbon::parse($item->homework->deadline);
+       });
+    }
+
+    /**
+     * @param Collection $items
+     * @return Collection
+     */
+    public static function filterInActive(Collection $items) {
+       return $items->filter(function ($item) {
+           return Carbon::now() > Carbon::parse($item->homework->deadline);
+       });
+    }
 }
