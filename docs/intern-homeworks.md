@@ -17,7 +17,7 @@ Success response:
                 "user_id": 2,
                 "homework": {
                     "id": 6,
-                    "name": "homework23",
+                    "name": "homework2",
                     "number": 2,
                     "course_id": 1,
                     "url": "",
@@ -34,8 +34,8 @@ Success response:
                 "user_id": 2,
                 "homework": {
                     "id": 7,
-                    "name": "homework23",
-                    "number": 2,
+                    "name": "homework3",
+                    "number": 3,
                     "course_id": 1,
                     "url": "",
                     "deadline": "2018-09-28 09:05:55",
