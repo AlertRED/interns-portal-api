@@ -3,8 +3,9 @@
 ## Get all homeworks
 **Endpoint(GET):** /api/v1/me/homeworks?api_token=someToken
 
-**Params list:**
+**Params list:** (option parameters are used for filtering)
 + api_token*
++ active
 
 Success response:
 ```json
