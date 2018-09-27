@@ -55,18 +55,26 @@ class HomeworkController extends Controller
     public function new(Request $request) {
         $request->validate([
             "name" => "required|string|min:4|max:255",
-            "number" => "required|integer",
+            "number" => "required|integer|min:1|max:32000",
             "course_id" => "required|integer|exists:internship_courses,id",
             "url" => "string|min:4|max:255",
             "deadline" => "required|string",
         ]);
+
+        $deadline = null;
+
+        try {
+            $deadline = Carbon::parse($request->deadline);
+        } catch (\Exception $e) {
+            abort(500, "Неверный формат datetime");
+        }
 
         $homework = Homework::create([
             "name" => $request->name,
             "number" => $request->number,
             "url" => $request->url ? $request->url : "",
             "course_id" => $request->course_id,
-            "deadline" => Carbon::parse($request->deadline)
+            "deadline" => $deadline
         ]);
 
         $course = InternshipCourse::find($request->course_id);
@@ -150,7 +158,7 @@ class HomeworkController extends Controller
         $homework = Homework::find($id);
 
         if (!$homework) {
-            abort(404);
+            abort(404, "Домашняя работа не найдена");
         }
 
         $homework->delete();

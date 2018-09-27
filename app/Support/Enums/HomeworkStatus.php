@@ -17,4 +17,12 @@ final class HomeworkStatus extends Enum
     const InProgress = 1;
     const OnReview = 2;
     const Finished = 3;
+
+    /**
+     * @param string $status
+     * @return bool
+     */
+    public static function isStatusExists(string $status) {
+        return in_array($status, HomeworkStatus::getKeys());
+    }
 }

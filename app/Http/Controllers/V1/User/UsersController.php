@@ -44,10 +44,7 @@ class UsersController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json([
-                "success" => false,
-                "message" => "Пользователь не найден"
-            ], 404);
+            abort(404, "Пользователь не найден");
         }
 
         return response()->json([
