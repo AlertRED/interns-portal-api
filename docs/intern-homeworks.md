@@ -1,7 +1,14 @@
 # Intern homeworks API
 
-## Get all homeworks
+## Get my homeworks
 **Endpoint(GET):** /api/v1/me/homeworks?api_token=someToken
+
+**Homework statuses list**
++ Failed
++ NotStarted
++ InProgress
++ OnReview
++ Finished
 
 **Params list:** (option parameters are used for filtering)
 + api_token*
@@ -51,3 +58,43 @@ Success response:
     }
 }
 ```
+
+## Get my homeworks
+**Endpoint(GET):** /api/v1/me/homework/{id}?api_token=someToken
+
+**Homework statuses list**
++ Failed
++ NotStarted
++ InProgress
++ OnReview
++ Finished
+
+**Params list:** (option parameters are used for filtering)
++ api_token*
++ id*
+
+Success response:
+```json{
+    "success": true,
+    "data": {
+        "homeworks": {
+            "id": 5,
+            "user_id": 2,
+            "homework": {
+                "id": 6,
+                "name": "homework22",
+                "number": 2,
+                "course_id": 1,
+                "url": "",
+                "deadline": "2018-09-30 13:03:01",
+                "created_at": "2018-09-25 09:35:33"
+            },
+            "github_uri": "someUri2",
+            "status": "InProgress",
+            "started_at": "2018-09-25 12:35:33",
+            "created_at": "2018-09-25 09:35:33"
+        }
+    }
+}
+```
+
