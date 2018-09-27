@@ -10,7 +10,7 @@
 ## Get my homeworks
 **Endpoint(GET):** /api/v1/me/homeworks?api_token=someToken
 
-**Params list:** (option parameters are used for filtering)
+**Params list:** (optional parameters are used for filtering)
 + api_token*
 + active - bool  (ex. 1)
 
@@ -59,14 +59,18 @@ Success response:
 }
 ```
 
-## Get homework
-**Note:** Users can get ONLY their homeworks, Employee can get any homework
+## Get user homework
 
-**Endpoint(GET):** /api/v1/homework/{id}?api_token=someToken
+**Notes:**
++ User can ONLY get their homeworks
++ Employee can get any user's homework
 
-**Params list:** (option parameters are used for filtering)
+**Endpoint(GET):** /api/v1/user/{id}/homework/{homework_id}?api_token=someToken
+
+**Params list:**
 + api_token*
 + id*
++ homework_id*
 
 Success response:
 ```json{
@@ -96,7 +100,7 @@ Success response:
 ## Edit my homework
 **Endpoint(PATCH):** /api/v1/me/homework/{id}?api_token=someToken
 
-**Params list:** (option parameters are used for filtering)
+**Params list:**
 + api_token*
 + id*
 + github_uri
@@ -132,7 +136,7 @@ Success response:
 
 **User group access:** Employee
 
-**Params list:** (option parameters are used for filtering)
+**Params list:**
 + api_token*
 + id*
 
@@ -186,7 +190,7 @@ Success response:
 
 **User group access:** Employee
 
-**Params list:** (option parameters are used for filtering)
+**Params list:**
 + api_token*
 + id*
 + homework_id*
