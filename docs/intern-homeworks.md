@@ -59,8 +59,10 @@ Success response:
 }
 ```
 
-## Get my homework
-**Endpoint(GET):** /api/v1/me/homework/{id}?api_token=someToken
+## Get homework
+**Note:** Users can get ONLY their homeworks, Employee can get any homework
+
+**Endpoint(GET):** /api/v1/homework/{id}?api_token=someToken
 
 **Params list:** (option parameters are used for filtering)
 + api_token*
