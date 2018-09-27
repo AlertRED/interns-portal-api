@@ -76,7 +76,7 @@ Success response:
 ```json{
     "success": true,
     "data": {
-        "homeworks": {
+        "homework": {
             "id": 5,
             "user_id": 2,
             "homework": {
@@ -110,7 +110,7 @@ Success response:
 ```json{
     "success": true,
     "data": {
-        "homeworks": {
+        "homework": {
             "id": 5,
             "user_id": 2,
             "homework": {
@@ -199,7 +199,7 @@ Success response:
 ```json{
     "success": true,
     "data": {
-        "homeworks": {
+        "homework": {
             "id": 5,
             "user_id": 2,
             "homework": {
