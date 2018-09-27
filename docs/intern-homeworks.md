@@ -5,7 +5,7 @@
 
 **Params list:** (option parameters are used for filtering)
 + api_token*
-+ active - book  (ex. 1)
++ active - bool  (ex. 1)
 
 Success response:
 ```json
