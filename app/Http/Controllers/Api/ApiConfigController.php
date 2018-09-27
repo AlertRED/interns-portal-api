@@ -22,6 +22,6 @@ class ApiConfigController extends Controller
         return response()->json([
             'version' => '1.0',
             'status' => 'working',
-        ], 200);
+        ]);
     }
 }

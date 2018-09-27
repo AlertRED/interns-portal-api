@@ -11,6 +11,31 @@ use App\Http\Controllers\Controller;
 class UsersController extends Controller
 {
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getInterns(Request $request)
+    {
+        $request->validate([
+            "course"  => "string|min:1|max:200",
+        ]);
+
+        $users = User::where("role", "User")
+            ->get();
+
+        if ($request->course) {
+            $users = $users->where("course", $request->course);
+        }
+
+        return response()->json([
+            "success" => true,
+            "data"    => [
+                "users" => UserTransformer::transformCollection($users)
+            ]
+        ]);
+    }
+
+    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -19,10 +44,7 @@ class UsersController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json([
-                "success" => false,
-                "message" => "Пользователь не найден"
-            ], 404);
+            abort(404, "Пользователь не найден");
         }
 
         return response()->json([
@@ -30,7 +52,7 @@ class UsersController extends Controller
             "data"    => [
                 "user" => UserTransformer::transformItem($user)
             ]
-        ], 200);
+        ]);
     }
 
     /**
