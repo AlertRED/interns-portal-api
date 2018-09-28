@@ -11,9 +11,8 @@ namespace App\Http\Controllers\V1\Homework;
 use App\Http\Controllers\Controller;
 use App\Http\Transformers\V1\Homework\HomeworkTransformer;
 use App\Models\Homework\Homework;
-use App\Models\Homework\InternHomework;
 use App\Models\Internship\InternshipCourse;
-use App\User;
+use App\Support\InternHomework\Util\InternHomeworkUtils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -69,6 +68,12 @@ class HomeworkController extends Controller
             abort(500, "Неверный формат datetime");
         }
 
+        $course = InternshipCourse::find($request->course_id);
+
+        if (!$course) {
+            abort(404, "Поток не найден");
+        }
+
         $homework = Homework::create([
             "name" => $request->name,
             "number" => $request->number,
@@ -77,16 +82,7 @@ class HomeworkController extends Controller
             "deadline" => $deadline
         ]);
 
-        $course = InternshipCourse::find($request->course_id);
-
-        $interns = User::where("course", $course->course)->get();
-
-        foreach ($interns as $intern) {
-            InternHomework::firstOrCreate([
-                "user_id" => $intern->id,
-                "homework_id" => $homework->id,
-            ]);
-        }
+        InternHomeworkUtils::assignHomeworkToInterns($homework, $course);
 
         return response()->json([
             "success" => true,
@@ -126,7 +122,6 @@ class HomeworkController extends Controller
         $request->validate([
             "name"      => "string|min:4|max:255",
             "number"    => "integer",
-            "course_id" => "integer|exists:internship_courses,id",
             "url"       => "string|min:4|max:255",
             "deadline"  => "string",
         ]);
@@ -141,7 +136,6 @@ class HomeworkController extends Controller
             "name"      => $request->name ? $request->name : $homework->name,
             "number"    => $request->number ? $request->number : $homework->number,
             "url"       => $request->url ? $request->url : $homework->url,
-            "course_id" => $request->course_id ? $request->course_id : $homework->course_id,
             "deadline"  => $request->deadline ? Carbon::parse($request->deadline) : $homework->deadline
         ]);
 
@@ -166,6 +160,35 @@ class HomeworkController extends Controller
         }
 
         $homework->delete();
+
+        return response()->json([
+            "success" => true,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addCourse(Request $request, $id) {
+        $request->validate([
+            "course_id" => "required|integer|min:1"
+        ]);
+
+        $homework = Homework::find($id);
+
+        if (!$homework) {
+            abort(404, "Домашняя работа не найдена");
+        }
+
+        $course = InternshipCourse::find($request->course_id);
+
+        if (!$course) {
+            abort(404, "Поток не найден");
+        }
+
+        InternHomeworkUtils::assignHomeworkToInterns($homework, $course);
 
         return response()->json([
             "success" => true,

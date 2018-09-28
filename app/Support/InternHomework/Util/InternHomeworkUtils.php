@@ -9,9 +9,12 @@
 namespace App\Support\InternHomework\Util;
 
 
+use App\Models\Homework\Homework;
 use App\Models\Homework\InternHomework;
+use App\Models\Internship\InternshipCourse;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\Enums\UserType;
+use App\User;
 
 class InternHomeworkUtils
 {
@@ -49,5 +52,20 @@ class InternHomeworkUtils
         ]);
 
         return $homework;
+    }
+
+    /**
+     * @param Homework $homework
+     * @param InternshipCourse $course
+     */
+    public static function assignHomeworkToInterns(Homework $homework, InternshipCourse $course) {
+        $interns = User::where("course", $course->course)->get();
+
+        foreach ($interns as $intern) {
+            InternHomework::firstOrCreate([
+                "user_id" => $intern->id,
+                "homework_id" => $homework->id,
+            ]);
+        }
     }
 }

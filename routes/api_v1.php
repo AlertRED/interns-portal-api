@@ -82,7 +82,8 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
             Route::get('/homework/{id}', 'Homework\HomeworkController@get');
             Route::patch('/homework/{id}', 'Homework\HomeworkController@edit');
             Route::delete('/homework/{id}', 'Homework\HomeworkController@delete');
-        });
 
+            Route::post('/homework/{id}/course', 'Homework\HomeworkController@addCourse');
+        });
     });
 });
