@@ -127,3 +127,31 @@ Success response:
     }
 }
 ```
+
+## Add homework course
+**Endpoint(POST):** /api/v1/homework/{id}/course?api_token=someToken
+
+**Group access:** Employee
+
+**Params list:**
++ id*
++ api_token*
++ course_id*
+
+Success response:
+```json
+{
+    "success": true,
+    "data": {
+        "homework": {
+            "id": 2,
+            "name": "testHomework1",
+            "number": 12,
+            "course_id": 1,
+            "url": "",
+            "deadline": "2018-09-24 14:46:41",
+            "created_at": "2018-09-25 08:23:55"
+        }
+    }
+}
+```
