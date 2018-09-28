@@ -97,11 +97,12 @@ Success response:
 ```
 
 ## Edit homework
-**Endpoint(PATCH):** /api/v1/homework?api_token=someToken
+**Endpoint(PATCH):** /api/v1/homework/{id}?api_token=someToken
 
 **Group access:** Employee
 
 **Params list:**
++ id*
 + api_token*
 + name
 + number
