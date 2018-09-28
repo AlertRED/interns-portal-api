@@ -42,8 +42,9 @@ Success response:
 **User group access:** Employee only
 
 
-Params list:
+Params list: (optional parameters can be used for filtering)
 + api_token*
++ course
 
 Success response:
 ```json
