@@ -5,7 +5,7 @@
 
 **Group access:** Employee
 
-**Params list:** (each parameter is optional and can be used as filter)
+**Params list:** (each optional parameter can be used as filter)
 + api_token*
 + course (ex. FrontEnd2)
 
