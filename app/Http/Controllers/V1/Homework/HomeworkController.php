@@ -133,6 +133,10 @@ class HomeworkController extends Controller
 
         $homework = Homework::find($id);
 
+        if (!$homework) {
+            abort(404, "Домашняя работа не найдена");
+        }
+
         $homework->update([
             "name"      => $request->name ? $request->name : $homework->name,
             "number"    => $request->number ? $request->number : $homework->number,
