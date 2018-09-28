@@ -192,6 +192,7 @@ class HomeworkController extends Controller
 
         return response()->json([
             "success" => true,
+            "homework" => HomeworkTransformer::transformItem($homework)
         ]);
     }
 }
