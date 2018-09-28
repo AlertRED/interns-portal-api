@@ -43,7 +43,6 @@ Success response:
 
 
 Params list:
-+ id*
 + api_token*
 
 Success response:
