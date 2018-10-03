@@ -15,10 +15,10 @@ class CreateHomeworksTable extends Migration
     {
         Schema::create('homeworks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("name")->nullable(false);
+            $table->string("name");
             $table->smallInteger("number");
-            $table->string("url")->nullable(false)->default('');
-            $table->integer("course_id")->unsigned()->nullable(false);
+            $table->string("url")->default('');
+            $table->integer("course_id")->unsigned();
             $table->foreign('course_id')
                 ->references('id')->on('internship_courses')
                 ->onUpdate('cascade')

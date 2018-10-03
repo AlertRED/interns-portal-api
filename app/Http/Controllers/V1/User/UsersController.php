@@ -60,7 +60,14 @@ class UsersController extends Controller
      */
     public function getMyProfileInfo()
     {
-        return $this->getUser(auth("api")->user()->id);
+        return response()->json([
+            "success" => true,
+            "data"    => [
+                "user" => UserTransformer::transformItem(
+                    User::find(auth("api")->user()->id)
+                )
+            ]
+        ]);
     }
 
     /**
