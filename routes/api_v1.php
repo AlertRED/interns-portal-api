@@ -40,16 +40,12 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
             Route::patch('/profile_info', 'User\UsersController@editMyProfileInfo');
 
             Route::get('/homeworks', 'Homework\InternHomeworkController@getMyHomeworks');
-            Route::get('/homework/{id}', 'Homework\InternHomeworkController@get');
-            Route::patch('/homework/{id}', 'Homework\InternHomeworkController@edit');
+            Route::get('/homework/{intern_homework}', 'Homework\InternHomeworkController@get');
+            Route::patch('/homework/{intern_homework}', 'Homework\InternHomeworkController@edit');
         });
 
-        /* homeworks */
-
-        Route::get('/user/{id}/homework/{homework_id}', 'Homework\InternHomeworkController@getUserHomework');
-
         /*
-         |-------------------------:----------------------------------------------
+         |-----------------------------------------------------------------------
          | Employee only routes
          |-----------------------------------------------------------------------
          */
@@ -64,26 +60,31 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
             /* Users */
             Route::get('/interns', 'User\UsersController@getInterns');
 
-
             Route::group([
                 'prefix' => 'user'
             ], function ()
             {
-                Route::get('/{id}', 'User\UsersController@getUser');
-                Route::get('/{id}/homeworks', 'Homework\InternHomeworkController@getUserHomeworks');
-                Route::patch('{id}/homework/{homework_id}', 'Homework\InternHomeworkController@editUserHomework');
+                Route::get('/{user}', 'User\UsersController@getUser');
+                Route::get('/{user}/homeworks', 'Homework\InternHomeworkController@getUserHomeworks');
+                Route::get('/{user}/homework/{intern_homework}', 'Homework\InternHomeworkController@getUserHomework');
+                Route::patch('/{user}/homework/{intern_homework}', 'Homework\InternHomeworkController@editUserHomework');
             });
 
             /* Homeworks */
 
             Route::get('/homeworks', 'Homework\HomeworkController@getAll');
 
-            Route::post('/homework', 'Homework\HomeworkController@new');
-            Route::get('/homework/{id}', 'Homework\HomeworkController@get');
-            Route::patch('/homework/{id}', 'Homework\HomeworkController@edit');
-            Route::delete('/homework/{id}', 'Homework\HomeworkController@delete');
+            Route::group([
+                'prefix' => 'homework'
+            ], function () {
 
-            Route::post('/homework/{id}/course', 'Homework\HomeworkController@addCourse');
+                Route::post('/', 'Homework\HomeworkController@new');
+                Route::get('/{homework}', 'Homework\HomeworkController@get');
+                Route::patch('/{homework}', 'Homework\HomeworkController@edit');
+                Route::delete('/{homework}', 'Homework\HomeworkController@delete');
+
+                Route::post('/{homework}/course', 'Homework\HomeworkController@addCourse');
+            });
         });
     });
 });

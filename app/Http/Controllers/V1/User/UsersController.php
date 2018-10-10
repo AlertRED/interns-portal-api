@@ -36,17 +36,11 @@ class UsersController extends Controller
     }
 
     /**
-     * @param $id
+     * @param User $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUser($id)
+    public function getUser(User $user)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            abort(404, "Пользователь не найден");
-        }
-
         return response()->json([
             "success" => true,
             "data"    => [
@@ -60,7 +54,14 @@ class UsersController extends Controller
      */
     public function getMyProfileInfo()
     {
-        return $this->getUser(auth("api")->user()->id);
+        return response()->json([
+            "success" => true,
+            "data"    => [
+                "user" => UserTransformer::transformItem(
+                    User::find(auth("api")->user()->id)
+                )
+            ]
+        ]);
     }
 
     /**

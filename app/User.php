@@ -34,10 +34,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLogin($value)
- * @property string|null $course
  * @property string $role
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCourse($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRole($value)
+ * @property int|null $course_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCourseId($value)
  */
 class User extends Authenticatable
 {

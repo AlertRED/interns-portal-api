@@ -63,12 +63,13 @@ class GenRegisterKey extends Command
         $registerKey = RegistrationKey::create([
             "key" => str_random(20),
             "role" => $allowedRoles[$selectedRoleKey],
-            "course" => $selectedCourse->course
+            "course_id" => $selectedCourse->id
         ]);
 
         $registerLink = url("/register?") . http_build_query([
             "register_key" => $registerKey->key
                 ]);
         $this->info("Register Link:\n" . $registerLink);
+        $this->info("Register Key:\n" . $registerKey->key);
     }
 }
