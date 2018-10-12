@@ -55,7 +55,7 @@ class HomeworkController extends Controller
         $request->validate([
             "name" => "required|string|min:4|max:255",
             "number" => "required|integer|min:1|max:32000",
-            "course_id" => "required|integer|exists:internship_courses,id",
+            "course" => "required|string|exists:internship_courses,course",
             "url" => "string|min:4|max:255",
             "deadline" => "required|string",
         ]);
@@ -68,7 +68,7 @@ class HomeworkController extends Controller
             abort(500, "Неверный формат datetime");
         }
 
-        $course = InternshipCourse::find($request->course_id);
+        $course = InternshipCourse::where("course", $request->course)->first();
 
         if (!$course) {
             abort(404, "Поток не найден");
@@ -78,7 +78,7 @@ class HomeworkController extends Controller
             "name" => $request->name,
             "number" => $request->number,
             "url" => $request->url ? $request->url : "",
-            "course_id" => $request->course_id,
+            "course_id" => $course->id,
             "deadline" => $deadline
         ]);
 
