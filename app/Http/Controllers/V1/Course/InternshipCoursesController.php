@@ -15,7 +15,7 @@ use App\Models\Internship\InternshipCourse;
 class InternshipCoursesController extends Controller
 {
     /**
-     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function all()
     {

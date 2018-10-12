@@ -8,7 +8,6 @@
 
 namespace App\Support\InternHomework\Util;
 
-
 use App\Models\Homework\Homework;
 use App\Models\Homework\InternHomework;
 use App\Models\Internship\InternshipCourse;
@@ -59,7 +58,9 @@ class InternHomeworkUtils
      * @param InternshipCourse $course
      */
     public static function assignHomeworkToInterns(Homework $homework, InternshipCourse $course) {
-        $interns = User::where("course", $course->course)->get();
+        $interns = User::where("role", UserType::getKey(UserType::User))
+            ->where("course_id", $course->id)
+            ->get();
 
         foreach ($interns as $intern) {
             InternHomework::firstOrCreate([

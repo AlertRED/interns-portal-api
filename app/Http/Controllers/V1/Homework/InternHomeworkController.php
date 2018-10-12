@@ -52,7 +52,6 @@ class InternHomeworkController extends Controller
      */
     public function get(InternHomework $myHomework)
     {
-        dd($myHomework);
         if (!$myHomework) {
             abort(404, "Домашняя работа не найдена");
         }
@@ -139,20 +138,14 @@ class InternHomeworkController extends Controller
 
     /**
      * @param $id
-     * @param $homework_id
+     * @param InternHomework $homework
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserHomework($id, $homework_id) {
+    public function getUserHomework($id, InternHomework $homework) {
         $user = User::find($id);
 
         if (!$user) {
             abort(404, "Пользователь не найден");
-        }
-
-        $homework = InternHomework::find($homework_id);
-
-        if (!$homework) {
-            abort(404, "Домашняя работа не найдена");
         }
 
         if ($homework->user_id != $user->id) {
