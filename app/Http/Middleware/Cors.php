@@ -23,7 +23,7 @@ class Cors
     public function handle(Request $request, Closure $next) {
         $next = $next($request);
         $next->headers->set('Access-Control-Allow-Origin', '*');
-        $next->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        $next->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
         $next->headers->set('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Origin, Authorization, Accept, Accept-Language');
         $next->headers->set('Access-Control-Max-Age', '600');
         return $next;
