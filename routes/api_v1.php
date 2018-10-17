@@ -19,6 +19,8 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
 
     Route::get('/check_api_token', 'Auth\AuthController@checkApiToken');
 
+    Route::get('/homework_statuses', 'Homework\HomeworkController@getHomeworkStatuses');
+
     /*
      |-----------------------------------------------------------------------
      | User routes

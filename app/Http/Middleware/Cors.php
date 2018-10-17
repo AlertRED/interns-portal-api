@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 
 class Cors
 {
-
     /**
      * Handle an incoming request
      * @param Request $request

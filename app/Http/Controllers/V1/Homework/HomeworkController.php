@@ -13,6 +13,7 @@ use App\Http\Transformers\V1\Homework\HomeworkTransformer;
 use App\Models\Homework\Homework;
 use App\Models\Internship\InternshipCourse;
 use App\Repositories\Homework\HomeworkRepository;
+use App\Support\Enums\HomeworkStatus;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -175,6 +176,18 @@ class HomeworkController extends Controller
             "success" => true,
             "data" => [
                 "homework" => HomeworkTransformer::transformItem($homework)
+            ]
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getHomeworkStatuses() {
+        return response()->json([
+            "success" => true,
+            "data" => [
+                "statuses" => HomeworkStatus::getKeys()
             ]
         ]);
     }
