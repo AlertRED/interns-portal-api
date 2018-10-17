@@ -47,13 +47,11 @@ class InternHomeworkController extends Controller
     }
 
     /**
-     * @param $id
+     * @param InternHomework $myHomework
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get($id)
+    public function get(InternHomework $myHomework)
     {
-        $myHomework = InternHomework::find($id);
-
         if (!$myHomework) {
             abort(404, "Домашняя работа не найдена");
         }
@@ -140,20 +138,14 @@ class InternHomeworkController extends Controller
 
     /**
      * @param $id
-     * @param $homework_id
+     * @param InternHomework $homework
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUserHomework($id, $homework_id) {
+    public function getUserHomework($id, InternHomework $homework) {
         $user = User::find($id);
 
         if (!$user) {
             abort(404, "Пользователь не найден");
-        }
-
-        $homework = InternHomework::find($homework_id);
-
-        if (!$homework) {
-            abort(404, "Домашняя работа не найдена");
         }
 
         if ($homework->user_id != $user->id) {
@@ -174,27 +166,16 @@ class InternHomeworkController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
-     * @param $homework_id
+     * @param User $user
+     * @param InternHomework $homework
      * @return \Illuminate\Http\JsonResponse
      */
-    public function editUserHomework(Request $request, $id, $homework_id) {
-        $user = User::find($id);
-
-        if (!$user) {
-            abort(404, "Пользователь не найден");
-        }
-
-        $homework = InternHomework::find($homework_id);
-
-        if (!$homework) {
-            abort(404, "Домашняя работа не найдена");
-        }
+    public function editUserHomework(Request $request, User $user, InternHomework $homework) {
 
         if ($homework->user_id != $user->id) {
             abort(400, "Домашняя работа не принадлежит пользователю");
         }
 
-        return $this->edit($request, $homework_id);
+        return $this->edit($request, $homework->id); // TODO: update
     }
 }

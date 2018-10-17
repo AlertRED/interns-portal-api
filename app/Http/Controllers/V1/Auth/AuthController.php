@@ -10,6 +10,8 @@
 namespace App\Http\Controllers\V1\Auth;
 
 use App\Models\Auth\RegistrationKey;
+use App\Repositories\Auth\RegistrationKeyRepository;
+use App\Repositories\User\UserRepository;
 use App\User;
 use Hash;
 use Illuminate\Http\Request;
@@ -34,17 +36,11 @@ class AuthController
         $user = User::where("login", $request->login)->first();
 
         if (!$user) {
-            return response()->json([
-                "success" => false,
-                "message" => "Пользователь не существует"
-            ], 404);
+            abort(404, "Пользователь не существует");
         }
 
         if (!Hash::check($request->password, $user->password)) {
-            return response()->json([
-                "success" => false,
-                "message" => "Неверный логин / пароль"
-            ], 401);
+            abort(401, "Неверный логин / пароль");
         }
 
         return response()->json([
@@ -73,31 +69,25 @@ class AuthController
         $registrationKey = RegistrationKey::where("key", $request->register_key)->first();
 
         if (!$registrationKey) {
-            return response()->json([
-                "success" => false,
-                "message" => "Неверный ключ регистрации"
-            ], 403);
+            abort(403, "Неверный ключ регистрации");
         }
 
         if ($registrationKey->is_used) {
-            return response()->json([
-                "success" => false,
-                "message" => "Ключ уже использован"
-            ], 403);
+            abort(403, "Ключ уже использован");
         }
 
-        $user = User::create([
+        $user = UserRepository::create([
             "login"      => $request->login,
             "email"      => $request->email,
             "first_name" => $request->first_name,
             "last_name"  => $request->last_name,
-            "course"     => $registrationKey->course,
+            "course_id"     => $registrationKey->course_id,
             "role"       => $registrationKey->role,
             "api_token"  => str_random(30),
             "password"   => Hash::make($request->password)
         ]);
 
-        $registrationKey->update([
+        RegistrationKeyRepository::update($registrationKey, [
             "is_used" => true,
             "user_id" => $user->id
         ]);
@@ -121,6 +111,7 @@ class AuthController
         ]);
 
         $result = User::where("api_token", $request->api_token)->first() !== null;
+
         return response()->json([
             "success" => $result,
         ], $result ? 200 : 401);

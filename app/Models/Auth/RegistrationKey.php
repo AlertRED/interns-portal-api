@@ -29,8 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereIsUsed($value)
  * @property string $role
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereRole($value)
- * @property string|null $course
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereCourse($value)
+ * @property int|null $course_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereCourseId($value)
  */
 class RegistrationKey extends Model
 {

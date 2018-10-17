@@ -32,6 +32,7 @@ use Illuminate\Support\Collection;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\InternHomework whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\InternHomework whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Homework\Homework $homework
  */
 class InternHomework extends Model
 {

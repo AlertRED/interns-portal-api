@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Homework\InternHomework;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,9 +26,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::model('intern_homework', InternHomework::class, function () {
+            throw new NotFoundHttpException();
+        });
     }
 
     /**

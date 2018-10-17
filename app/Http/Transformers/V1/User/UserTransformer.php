@@ -7,6 +7,7 @@
 
 namespace App\Http\Transformers\V1\User;
 
+use App\Models\Internship\InternshipCourse;
 use App\User;
 use Illuminate\Support\Collection;
 use League\Fractal\TransformerAbstract;
@@ -20,13 +21,14 @@ class UserTransformer extends TransformerAbstract
      */
     public function transform(User $user)
     {
+        $course = InternshipCourse::find($user->course_id);
         return [
             'id'    => (int) $user->id,
             'email'  => $user->email,
             'login' => $user->login,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
-            'course' => $user->course,
+            'course' => $course ? $course->course : null,
             'role' => $user->role,
             'register_date' => (string) $user->created_at
         ];

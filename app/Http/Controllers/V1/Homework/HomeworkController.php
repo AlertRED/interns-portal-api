@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Transformers\V1\Homework\HomeworkTransformer;
 use App\Models\Homework\Homework;
 use App\Models\Internship\InternshipCourse;
+use App\Repositories\Homework\HomeworkRepository;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -65,7 +66,7 @@ class HomeworkController extends Controller
         try {
             $deadline = Carbon::parse($request->deadline);
         } catch (\Exception $e) {
-            abort(500, "Неверный формат datetime");
+            abort(422, "Неверный формат datetime");
         }
 
         $course = InternshipCourse::where("course", $request->course)->first();
@@ -74,7 +75,7 @@ class HomeworkController extends Controller
             abort(404, "Поток не найден");
         }
 
-        $homework = Homework::create([
+        $homework = HomeworkRepository::create([
             "name" => $request->name,
             "number" => $request->number,
             "url" => $request->url ? $request->url : "",
@@ -82,8 +83,6 @@ class HomeworkController extends Controller
             "deadline" => $deadline
         ]);
 
-        InternHomeworkUtils::assignHomeworkToInterns($homework, $course);
-
         return response()->json([
             "success" => true,
             "data"    => [
@@ -93,17 +92,11 @@ class HomeworkController extends Controller
     }
 
     /**
-     * @param $id
+     * @param Homework $homework
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get($id)
+    public function get(Homework $homework)
     {
-        $homework = Homework::find($id);
-
-        if (!$homework) {
-            abort(404, "Домашняя работа не найдена");
-        }
-
         return response()->json([
             "success" => true,
             "data"    => [
@@ -113,11 +106,11 @@ class HomeworkController extends Controller
     }
 
     /**
+     * @param Homework $homework
      * @param Request $request
-     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(Request $request, $id)
+    public function edit(Homework $homework, Request $request)
     {
         $request->validate([
             "name"      => "string|min:4|max:255",
@@ -125,12 +118,6 @@ class HomeworkController extends Controller
             "url"       => "string|min:4|max:255",
             "deadline"  => "string",
         ]);
-
-        $homework = Homework::find($id);
-
-        if (!$homework) {
-            abort(404, "Домашняя работа не найдена");
-        }
 
         $homework->update([
             "name"      => $request->name ? $request->name : $homework->name,
@@ -148,17 +135,11 @@ class HomeworkController extends Controller
     }
 
     /**
-     * @param $id
+     * @param Homework $homework
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function delete($id) {
-        $homework = Homework::find($id);
-
-        if (!$homework) {
-            abort(404, "Домашняя работа не найдена");
-        }
-
+    public function delete(Homework $homework) {
         $homework->delete();
 
         return response()->json([
@@ -192,7 +173,9 @@ class HomeworkController extends Controller
 
         return response()->json([
             "success" => true,
-            "homework" => HomeworkTransformer::transformItem($homework)
+            "data" => [
+                "homework" => HomeworkTransformer::transformItem($homework)
+            ]
         ]);
     }
 }
