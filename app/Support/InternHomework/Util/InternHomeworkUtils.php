@@ -49,7 +49,7 @@ class InternHomeworkUtils
             ]);
         }
 
-        if (!in_array($newStatus, $allowedStatuses) && !in_array($me->role, $allowedRoles)) {
+        if (!in_array($me->role, $allowedRoles) && !in_array($newStatus, $allowedStatuses)) {
             abort(403, "Вы не можете изменять текущий статус");
         }
 
