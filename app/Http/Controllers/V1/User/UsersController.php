@@ -41,15 +41,15 @@ class UsersController extends Controller
     }
 
     /**
-     * @param User $user
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUser(User $user)
+    public function getUser(int $id)
     {
         return response()->json([
             "success" => true,
-            "data"    => [
-                "user" => UserTransformer::transformItem($user)
+            "data" => [
+                "user" => UserTransformer::transformItem(User::find($id))
             ]
         ]);
     }
