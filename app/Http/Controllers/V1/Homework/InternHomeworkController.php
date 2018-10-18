@@ -99,28 +99,17 @@ class InternHomeworkController extends Controller
     {
         $request->validate([
             "github_uri" => "string|min:4|max:255",
-            "status" => "string|min:4|max:255",
         ]);
 
-        if (isset($request->status)) {
-            if (!HomeworkStatus::isStatusExists($request->status)) {
-                abort(400, "Неверный статус");
-            }
+        $me = auth("api")->user();
+
+        if (!InternHomeworkUtils::isUserHasHomeworkAccess($me, $myHomework)) {
+            abort(403, "Нет доступа");
         }
 
         $myHomework->update([
             "github_uri" => isset($request->github_uri) ? $request->github_uri : $myHomework->github_uri,
         ]);
-
-        $me = auth("api")->user();
-
-        if (isset($request->status)) {
-            $myHomework = InternHomeworkUtils::changeStatus($me, $myHomework, $request->status);
-        }
-
-        if (!InternHomeworkUtils::isUserHasHomeworkAccess($me, $myHomework)) {
-            abort(403, "Нет доступа");
-        }
 
         return response()->json([
             "success" => true,
@@ -165,11 +154,34 @@ class InternHomeworkController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function editUserHomework(Request $request, User $user, InternHomework $homework) {
+        $request->validate([
+            "status" => "string|min:4|max:255",
+            "github_uri" => "string|min:4|max:255"
+        ]);
+
+        if (isset($request->status)) {
+            if (!HomeworkStatus::isStatusExists($request->status)) {
+                abort(400, "Неверный статус");
+            }
+        }
 
         if ($homework->user_id != $user->id) {
             abort(400, "Домашняя работа не принадлежит пользователю");
         }
 
-        return $this->edit($request, $homework->id); // TODO: update
+        if (isset($request->status)) {
+            $homework = InternHomeworkUtils::changeStatus(auth("api")->user(), $homework, $request->status);
+        }
+
+        $homework->update([
+            "github_uri" => isset($request->github_uri) ? $request->github_uri : $homework->github_uri,
+        ]);
+
+        return response()->json([
+            "success" => true,
+            "data" => [
+                "homework" => InternHomeworkTransformer::transformItem($homework)
+            ]
+        ]);
     }
 }
