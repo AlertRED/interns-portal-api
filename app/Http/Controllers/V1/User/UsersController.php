@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\User;
 
+use App\Models\Internship\InternshipCourse;
 use Hash;
 use App\User;
 use Illuminate\Http\Request;
@@ -24,7 +25,11 @@ class UsersController extends Controller
             ->get();
 
         if ($request->course) {
-            $users = $users->where("course", $request->course);
+            $course = InternshipCourse::where("course", $request->course)->first();
+            if (!$course) {
+                abort(404, "Курс " . $request->course . " не найден");
+            }
+            $users = $users->where("course_id", $course->id);
         }
 
         return response()->json([
