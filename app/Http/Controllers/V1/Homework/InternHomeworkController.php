@@ -99,13 +99,19 @@ class InternHomeworkController extends Controller
     {
         $request->validate([
             "github_uri" => "string|min:4|max:255",
-            "status"     => "string|min:4|max:255",
+            "status" => "string|min:4|max:255",
         ]);
 
         $myHomework = InternHomework::find($id);
 
         if (!$myHomework) {
             abort(404, "Домашняя работа не найдена");
+        }
+
+        $me = auth("api")->user();
+
+        if (!InternHomeworkUtils::isUserHasHomeworkAccess($me, $myHomework)) {
+            abort(403, "Нет доступа");
         }
 
         if (isset($request->status)) {
@@ -118,19 +124,13 @@ class InternHomeworkController extends Controller
             "github_uri" => isset($request->github_uri) ? $request->github_uri : $myHomework->github_uri,
         ]);
 
-        $me = auth("api")->user();
-
         if (isset($request->status)) {
             $myHomework = InternHomeworkUtils::changeStatus($me, $myHomework, $request->status);
         }
 
-        if (!InternHomeworkUtils::isUserHasHomeworkAccess($me, $myHomework)) {
-            abort(403, "Нет доступа");
-        }
-
         return response()->json([
             "success" => true,
-            "data"    => [
+            "data" => [
                 "homework" => InternHomeworkTransformer::transformItem($myHomework)
             ]
         ]);
