@@ -38,9 +38,16 @@ class InternHomeworkUtils
         ];
 
         $allowedStatuses = [
+            HomeworkStatus::getKey(HomeworkStatus::NotStarted),
             HomeworkStatus::getKey(HomeworkStatus::InProgress),
             HomeworkStatus::getKey(HomeworkStatus::OnReview)
         ];
+
+        if (!in_array($homework->status, HomeworkStatus::getKeys())) {
+            $homework->update([
+                "status" => HomeworkStatus::getKey(HomeworkStatus::NotStarted)
+            ]);
+        }
 
         if (!in_array($newStatus, $allowedStatuses) && !in_array($me->role, $allowedRoles)) {
             abort(403, "Вы не можете изменять текущий статус");

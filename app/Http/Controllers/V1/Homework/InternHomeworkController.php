@@ -92,21 +92,15 @@ class InternHomeworkController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
+     * @param InternHomework $myHomework
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, InternHomework $myHomework)
     {
         $request->validate([
             "github_uri" => "string|min:4|max:255",
-            "status"     => "string|min:4|max:255",
+            "status" => "string|min:4|max:255",
         ]);
-
-        $myHomework = InternHomework::find($id);
-
-        if (!$myHomework) {
-            abort(404, "Домашняя работа не найдена");
-        }
 
         if (isset($request->status)) {
             if (!HomeworkStatus::isStatusExists($request->status)) {
@@ -130,7 +124,7 @@ class InternHomeworkController extends Controller
 
         return response()->json([
             "success" => true,
-            "data"    => [
+            "data" => [
                 "homework" => InternHomeworkTransformer::transformItem($myHomework)
             ]
         ]);
