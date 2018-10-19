@@ -17,6 +17,6 @@ class AppNotificationHandler
      * @param Notification $notification
      */
     public static function process(Notification $notification) {
-
+        error_log("app notification: " . $notification->getText());
     }
 }

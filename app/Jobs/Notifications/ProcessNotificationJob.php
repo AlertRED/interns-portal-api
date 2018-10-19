@@ -8,6 +8,8 @@
 
 namespace App\Jobs\Notifications;
 
+use App\Support\Notifications\Handlers\AppNotificationHandler;
+use App\Support\Notifications\Handlers\EmailNotificationHandler;
 use App\Support\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Bus\Queueable;
@@ -34,21 +36,17 @@ class ProcessNotificationJob implements ShouldQueue
         $this->notification = $notification;
     }
 
-    /**
-     *
-     */
     public function handle() {
-        $notificationTypes = $this->notification;
+        $notificationTypes = $this->notification->getNotificationTypes();
 
         foreach ($notificationTypes as $notificationType) {
-            error_log("notification processed!");
             try {
                 switch ($notificationType) {
                     case "app":
-
+                        AppNotificationHandler::process($this->notification);
                         break;
                     case "email":
-
+                        EmailNotificationHandler::process($this->notification);
                         break;
                 }
             } catch (\Exception $e) {

@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use App\Console\Commands\Auth\GenRegisterKey;
-use App\Console\Commands\Temp\TempCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,7 +15,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         GenRegisterKey::class,
-        TempCommand::class
     ];
 
     /**
