@@ -24,3 +24,5 @@ composer\.lock
 \.phpstorm\.meta\.php
 
 public/\.htaccess
+
+app/Console/Commands/Temp/TempCommand\.php
