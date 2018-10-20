@@ -43,14 +43,14 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
             Route::get('/homeworks', 'Homework\InternHomeworkController@getMyHomeworks');
             Route::get('/homework/{intern_homework}', 'Homework\InternHomeworkController@get');
             Route::patch('/homework/{intern_homework}', 'Homework\InternHomeworkController@edit');
-        });
 
-        Route::group([
-            'prefix' => 'notifications'
-        ], function ()
-        {
-            Route::get('/', 'Notification\AppNotificationController@getLatest');
-            Route::patch('/seen_all', 'Notification\AppNotificationController@setAllToSeen');
+            Route::group([
+                'prefix' => 'notifications'
+            ], function ()
+            {
+                Route::get('/', 'Notification\AppNotificationController@getLatest');
+                Route::patch('/seen_all', 'Notification\AppNotificationController@setAllToSeen');
+            });
         });
 
         /*
