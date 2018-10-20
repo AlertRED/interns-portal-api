@@ -1,6 +1,6 @@
 # Notifications API
 
-## Get my profile info
+## Get latest notifications
 **Endpoint(GET):** /api/v1/me/notifications?api_token=someToken
 
 Params list:
@@ -48,7 +48,7 @@ Success response example:
 }
 ```
 
-## Get my profile info
+## Set all notifications to seen
 **Endpoint(PATCH):** /api/v1/me/notifications/seen_all?api_token=someToken
 
 Params list:
