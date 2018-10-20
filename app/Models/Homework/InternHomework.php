@@ -8,6 +8,7 @@
 
 namespace App\Models\Homework;
 
+use App\Support\Enums\HomeworkStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -72,5 +73,12 @@ class InternHomework extends Model
        return $items->filter(function ($item) {
            return Carbon::now() > Carbon::parse($item->homework->deadline);
        });
+    }
+
+    /**
+     * @return string
+     */
+    public static function getDefaultStatus() {
+        return HomeworkStatus::getKey(HomeworkStatus::NotStarted);
     }
 }

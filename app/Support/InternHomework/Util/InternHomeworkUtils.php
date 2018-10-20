@@ -64,10 +64,16 @@ class InternHomeworkUtils
             ->get();
 
         foreach ($interns as $intern) {
-            InternHomework::firstOrCreate([
-                "user_id" => $intern->id,
-                "homework_id" => $homework->id,
-            ]);
+            $homework = InternHomework::where("user_id", $intern->id)
+                ->where("homework_id", $homework->id)
+                ->first();
+            if (!$homework) {
+                InternHomework::create([
+                    "user_id" => $intern->id,
+                    "homework" => $homework->id,
+                    "status" => InternHomework::getDefaultStatus()
+                ]);
+            }
         }
     }
 }
