@@ -56,3 +56,10 @@ Params list:
 
 Дополнения:
 + выставляет всем оповещениям юзера seen = true
+
+Success response example:
+```json
+{
+    "success": true
+}
+```
