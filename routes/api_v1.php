@@ -45,6 +45,14 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
             Route::patch('/homework/{intern_homework}', 'Homework\InternHomeworkController@edit');
         });
 
+        Route::group([
+            'prefix' => 'notifications'
+        ], function ()
+        {
+            Route::get('/', 'Notification\AppNotificationController@getLatest');
+            Route::patch('/seen_all', 'Notification\AppNotificationController@setAllToSeen');
+        });
+
         /*
          |-----------------------------------------------------------------------
          | Employee only routes
