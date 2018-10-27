@@ -11,6 +11,7 @@ namespace App\Support\InternHomework\Util;
 use App\Models\Homework\Homework;
 use App\Models\Homework\InternHomework;
 use App\Models\Internship\InternshipCourse;
+use App\Repositories\Homework\InternHomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\Enums\UserType;
 use App\User;
@@ -38,7 +39,7 @@ class InternHomeworkUtils
         ];
 
         if (!in_array($homework->status, HomeworkStatus::getKeys())) {
-            $homework->update([
+            $homework = InternHomeworkRepository::update($homework, [
                 "status" => HomeworkStatus::getKey(HomeworkStatus::NotStarted)
             ]);
         }
@@ -47,7 +48,7 @@ class InternHomeworkUtils
             abort(403, "Группа  " . $me->role . " не может изменять статус домашних заданий");
         }
 
-        $homework->update([
+        $homework = InternHomeworkRepository::update($homework, [
             "status" => $newStatus
         ]);
 

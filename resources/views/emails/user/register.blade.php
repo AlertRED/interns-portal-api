@@ -1,8 +1,10 @@
-@extends('layouts.app')
+@extends('emails.layouts.base')
 
-<center>Вы успешно зарегистрировались</center>
-<p>Ваши данные для входа</p><br/>
+@section('content')
+<center>Вы успешно зарегистрировались на learn.2-up.ru</center>
 
-<b>Логин:</b> {{$user->login}}<br/>
-<b>email:</b> {{$user->email}}<br/>
+<p>Ваши данные для входа:</p>
+
+<b>логин:</b> {{$user->login}}<br/>
 <b>пароль:</b> {{$password}}<br/>
+@endsection

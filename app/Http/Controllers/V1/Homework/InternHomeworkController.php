@@ -11,6 +11,7 @@ namespace App\Http\Controllers\V1\Homework;
 use App\Http\Controllers\Controller;
 use App\Http\Transformers\V1\Homework\InternHomeworkTransformer;
 use App\Models\Homework\InternHomework;
+use App\Repositories\Homework\InternHomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
 use App\User;
@@ -173,7 +174,7 @@ class InternHomeworkController extends Controller
             $homework = InternHomeworkUtils::changeStatus(auth("api")->user(), $homework, $request->status);
         }
 
-        $homework->update([
+        $homework = InternHomeworkRepository::update($homework, [
             "github_uri" => isset($request->github_uri) ? $request->github_uri : $homework->github_uri,
         ]);
 
