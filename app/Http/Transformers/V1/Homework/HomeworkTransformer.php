@@ -19,15 +19,15 @@ class HomeworkTransformer extends TransformerAbstract
      * @param Homework $item
      * @return array
      */
-    public function transform(Homework $item)
-    {
+    public function transform(Homework $item) {
         return [
-            'id'         => (int)$item->id,
-            'name'       => $item->name,
-            'number'     => (int)$item->number,
-            'course_id'  => (int)$item->course_id,
-            'url'        => $item->url,
-            'deadline'   => (string)$item->deadline,
+            'id' => (int)$item->id,
+            'name' => $item->name,
+            'number' => (int)$item->number,
+            'course_id' => (int)$item->course_id,
+            'url' => $item->url,
+            'deadline' => (string)$item->deadline,
+            'start_date' => (string)$item->start_date,
             'created_at' => (string)$item->created_at
         ];
     }

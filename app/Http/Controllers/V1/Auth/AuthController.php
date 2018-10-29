@@ -9,12 +9,16 @@
 
 namespace App\Http\Controllers\V1\Auth;
 
+use App\Jobs\Notifications\ProcessNotificationJob;
 use App\Models\Auth\RegistrationKey;
 use App\Repositories\Auth\RegistrationKeyRepository;
 use App\Repositories\User\UserRepository;
+use App\Support\Notifications\Notifiers\EmployeeNotifier;
 use App\User;
 use Hash;
 use Illuminate\Http\Request;
+use App\Support\Notifications\Notification;
+use Queue;
 
 /**
  * Class AuthController
@@ -55,14 +59,13 @@ class AuthController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
-    {
+    public function register(Request $request) {
         $request->validate([
-            "login"        => "required|string|unique:users,login|min:3|max:255",
-            "email"        => "required|email|unique:users,email|max:255",
-            "first_name"   => "required|string|min:3|max:100",
-            "last_name"    => "required|string|min:3|max:100",
-            "password"     => "required|string|min:4|max:50",
+            "login" => "required|string|unique:users,login|min:3|max:255",
+            "email" => "required|email|unique:users,email|max:255",
+            "first_name" => "required|string|min:3|max:100",
+            "last_name" => "required|string|min:3|max:100",
+            "password" => "required|string|min:4|max:50",
             "register_key" => "required|string|min:4|max:50"
         ]);
 
@@ -77,14 +80,14 @@ class AuthController
         }
 
         $user = UserRepository::create([
-            "login"      => $request->login,
-            "email"      => $request->email,
+            "login" => $request->login,
+            "email" => $request->email,
             "first_name" => $request->first_name,
-            "last_name"  => $request->last_name,
-            "course_id"     => $registrationKey->course_id,
-            "role"       => $registrationKey->role,
-            "api_token"  => str_random(30),
-            "password"   => Hash::make($request->password)
+            "last_name" => $request->last_name,
+            "course_id" => $registrationKey->course_id,
+            "role" => $registrationKey->role,
+            "api_token" => str_random(30),
+            "password" => Hash::make($request->password)
         ]);
 
         RegistrationKeyRepository::update($registrationKey, [
@@ -92,9 +95,26 @@ class AuthController
             "user_id" => $user->id
         ]);
 
+        $notification = new Notification("Вы успешно зарегистрировались на learn.2-up.ru", $user);
+
+        $notification->setNotificationTypes(["email"]);
+
+        $notification->setData([
+            "mail_view" => "emails.user.register"
+        ]);
+
+        $notification->setMailData([
+            "user" => $user,
+            "password" => $request->password
+        ]);
+
+        Queue::push(new ProcessNotificationJob($notification));
+
+        EmployeeNotifier::notifyEmployeeUserRegistered($user);
+
         return response()->json([
             "success" => true,
-            "data"    => [
+            "data" => [
                 "api_token" => $user->api_token
             ]
         ]);

@@ -11,8 +11,10 @@ namespace App\Http\Controllers\V1\Homework;
 use App\Http\Controllers\Controller;
 use App\Http\Transformers\V1\Homework\InternHomeworkTransformer;
 use App\Models\Homework\InternHomework;
+use App\Repositories\Homework\InternHomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
+use App\Support\Notifications\Notifiers\EmployeeNotifier;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -107,9 +109,16 @@ class InternHomeworkController extends Controller
             abort(403, "Нет доступа");
         }
 
-        $myHomework->update([
+        $myHomework = InternHomeworkRepository::update($myHomework, [
             "github_uri" => isset($request->github_uri) ? $request->github_uri : $myHomework->github_uri,
         ]);
+
+        if (isset($request->github_uri) && $myHomework->status == HomeworkStatus::getKey(HomeworkStatus::InProgress)) {
+            $myHomework = InternHomeworkUtils::changeStatus(
+                null, $myHomework, HomeworkStatus::getKey(HomeworkStatus::OnReview), true
+            );
+            EmployeeNotifier::notifyEmployeeHomeworkOnReview($myHomework);
+        }
 
         return response()->json([
             "success" => true,
@@ -173,7 +182,7 @@ class InternHomeworkController extends Controller
             $homework = InternHomeworkUtils::changeStatus(auth("api")->user(), $homework, $request->status);
         }
 
-        $homework->update([
+        $homework = InternHomeworkRepository::update($homework, [
             "github_uri" => isset($request->github_uri) ? $request->github_uri : $homework->github_uri,
         ]);
 

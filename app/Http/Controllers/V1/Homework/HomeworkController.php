@@ -60,14 +60,24 @@ class HomeworkController extends Controller
             "course" => "required|string|exists:internship_courses,course",
             "url" => "string|min:4|max:255",
             "deadline" => "required|string",
+            "start_date" => "required|string"
         ]);
 
-        $deadline = null;
+        $dates = [
+            "deadline" => null,
+            "start_date" => null
+        ];
 
         try {
-            $deadline = Carbon::parse($request->deadline);
+            $dates["deadline"] = Carbon::parse($request->deadline);
         } catch (\Exception $e) {
-            abort(422, "Неверный формат datetime");
+            abort(422, "Неверный формат дедлайна (datetime)");
+        }
+
+        try {
+            $dates["start_date"] = Carbon::parse($request->start_date);
+        } catch (\Exception $e) {
+            abort(422, "Неверный формат даты старта (datetime)");
         }
 
         $course = InternshipCourse::where("course", $request->course)->first();
@@ -81,7 +91,8 @@ class HomeworkController extends Controller
             "number" => $request->number,
             "url" => $request->url ? $request->url : "",
             "course_id" => $course->id,
-            "deadline" => $deadline
+            "deadline" => $dates["deadline"],
+            "start_date" => $dates["start_date"]
         ]);
 
         return response()->json([

@@ -56,6 +56,14 @@ class InternHomework extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user()
+    {
+        return $this->hasOne("App\User", "id", "user_id");
+    }
+
+    /**
      * @param Collection $items
      * @return Collection
      */

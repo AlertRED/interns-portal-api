@@ -52,4 +52,19 @@ class User extends Authenticatable
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * @return string
+     */
+    public function getFullName() {
+        return $this->first_name . " " . $this->last_name;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function course()
+    {
+        return $this->hasOne("App\Models\Internship\InternshipCourse", "id", "course_id");
+    }
 }
