@@ -15,6 +15,7 @@ use App\Models\Internship\InternshipCourse;
 use App\Repositories\Homework\HomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
+use App\Support\Lang\HomeworkStatusesLang;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -195,10 +196,16 @@ class HomeworkController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getHomeworkStatuses() {
+        $statuses = [];
+
+        foreach (HomeworkStatus::getKeys() as $key) {
+            $statuses[] = HomeworkStatusesLang::getTranslated($key);
+        }
+
         return response()->json([
             "success" => true,
             "data" => [
-                "statuses" => HomeworkStatus::getKeys()
+                "statuses" => $statuses
             ]
         ]);
     }
