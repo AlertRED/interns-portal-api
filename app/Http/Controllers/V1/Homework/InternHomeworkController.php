@@ -115,8 +115,9 @@ class InternHomeworkController extends Controller
         ]);
 
         if (isset($request->github_uri) && $myHomework->status == HomeworkStatus::getKey(HomeworkStatus::InProgress)) {
+            $newStatus = HomeworkStatusesLang::getTranslated(HomeworkStatus::getKey(HomeworkStatus::OnReview));
             $myHomework = InternHomeworkUtils::changeStatus(
-                null, $myHomework, HomeworkStatus::getKey(HomeworkStatus::OnReview), true
+                null, $myHomework, $newStatus, true
             );
             EmployeeNotifier::notifyEmployeeHomeworkOnReview($myHomework);
         }
