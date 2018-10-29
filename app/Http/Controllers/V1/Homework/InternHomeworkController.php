@@ -14,6 +14,7 @@ use App\Models\Homework\InternHomework;
 use App\Repositories\Homework\InternHomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
+use App\Support\Lang\HomeworkStatusesLang;
 use App\Support\Notifications\Notifiers\EmployeeNotifier;
 use App\User;
 use Illuminate\Http\Request;
@@ -168,18 +169,16 @@ class InternHomeworkController extends Controller
             "github_uri" => "string|min:4|max:255"
         ]);
 
-        if (isset($request->status)) {
-            if (!HomeworkStatus::isStatusExists($request->status)) {
-                abort(400, "Неверный статус");
-            }
-        }
-
         if ($homework->user_id != $user->id) {
             abort(400, "Домашняя работа не принадлежит пользователю");
         }
 
         if (isset($request->status)) {
-            $homework = InternHomeworkUtils::changeStatus(auth("api")->user(), $homework, $request->status);
+            $sourceStatus = HomeworkStatusesLang::getSource($request->status);
+            if (!$sourceStatus || !HomeworkStatus::isStatusExists($sourceStatus)) {
+                abort(400, "Неверный статус");
+            }
+            $homework = InternHomeworkUtils::changeStatus(auth("api")->user(), $homework, $sourceStatus);
         }
 
         $homework = InternHomeworkRepository::update($homework, [

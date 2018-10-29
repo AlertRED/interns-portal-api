@@ -13,6 +13,7 @@ use App\Models\Homework\InternHomework;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
 use App\Support\Notifications\Notifiers\EmployeeNotifier;
+use App\Support\Notifications\Notifiers\InternNotifier;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -48,6 +49,7 @@ class RefreshHomeworkData extends Command
                             HomeworkStatus::getKey(HomeworkStatus::InProgress),
                             true
                         );
+                        InternNotifier::notifyUserHomeworkStatusChanged($homework);
                     }
                     break;
                 case HomeworkStatus::getKey(HomeworkStatus::InProgress):

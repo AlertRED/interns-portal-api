@@ -9,6 +9,7 @@
 namespace App\Http\Transformers\V1\Homework;
 
 use App\Models\Homework\InternHomework;
+use App\Support\Lang\HomeworkStatusesLang;
 use Illuminate\Support\Collection;
 use League\Fractal\TransformerAbstract;
 use Spatie\Fractalistic\ArraySerializer;
@@ -26,7 +27,7 @@ class InternHomeworkTransformer extends TransformerAbstract
             'user_id' => (int)$item->user_id,
             'homework' => HomeworkTransformer::transformItem($item->homework),
             'github_uri' => $item->github_uri,
-            'status' => $item->status,
+            'status' => HomeworkStatusesLang::getTranslated($item->status),
             'started_at' => (string) $item->started_at,
             'created_at' => (string) $item->created_at
         ];
