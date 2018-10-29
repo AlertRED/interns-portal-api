@@ -14,6 +14,8 @@ use App\Models\Internship\InternshipCourse;
 use App\Repositories\Homework\InternHomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\Enums\UserType;
+use App\Support\Notifications\Notifiers\InternNotifier;
+use App\Support\User\Util\UserRoles;
 use App\User;
 
 class InternHomeworkUtils
@@ -31,9 +33,10 @@ class InternHomeworkUtils
      * @param $me
      * @param InternHomework $homework
      * @param string $newStatus
+     * @param bool $force
      * @return InternHomework
      */
-    public static function changeStatus($me, InternHomework $homework, string $newStatus) {
+    public static function changeStatus($me, InternHomework $homework, string $newStatus, bool $force = false) {
         $allowedRoles = [
             UserType::getKey(UserType::Employee)
         ];
@@ -44,13 +47,15 @@ class InternHomeworkUtils
             ]);
         }
 
-        if (!in_array($me->role, $allowedRoles)) {
+        if (!$force && !in_array($me->role, $allowedRoles)) {
             abort(403, "Группа  " . $me->role . " не может изменять статус домашних заданий");
         }
 
         $homework = InternHomeworkRepository::update($homework, [
             "status" => $newStatus
         ]);
+
+        InternNotifier::notifyUserHomeworkStatusChanged($homework);
 
         return $homework;
     }
@@ -65,13 +70,13 @@ class InternHomeworkUtils
             ->get();
 
         foreach ($interns as $intern) {
-            $homework = InternHomework::where("user_id", $intern->id)
+            $internHomework = InternHomework::where("user_id", $intern->id)
                 ->where("homework_id", $homework->id)
                 ->first();
-            if (!$homework) {
+            if (!$internHomework && $intern->role == UserType::getKey(UserType::User)) {
                 InternHomework::create([
                     "user_id" => $intern->id,
-                    "homework" => $homework->id,
+                    "homework_id" => $homework->id,
                     "status" => InternHomework::getDefaultStatus()
                 ]);
             }

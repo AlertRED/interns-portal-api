@@ -110,7 +110,7 @@ class AuthController
 
         Queue::push(new ProcessNotificationJob($notification));
 
-        EmployeeNotifier::NotifyEmployeeUserRegistered($user);
+        EmployeeNotifier::notifyEmployeeUserRegistered($user);
 
         return response()->json([
             "success" => true,

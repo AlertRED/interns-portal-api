@@ -3,6 +3,7 @@
 @section('content')
     <center>Стажер {{$fullName}} зарегистрировался на learn.2-up.ru</center>
 
-    <b>email:</b> {{$user->email}}<br/>
-    <b>логин:</b> {{$user->login}}<br/>
+    <b>Email:</b> {{$user->email}}<br/>
+    <b>Логин:</b> {{$user->login}}<br/>
+    <b>Поток:</b> {{$user->course->course}}<br/>
 @endsection

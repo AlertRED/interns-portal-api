@@ -30,6 +30,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property string $name
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework whereName($value)
+ * @property string|null $start_date
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework whereStartDate($value)
  */
 class Homework extends Model
 {
