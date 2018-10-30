@@ -28,7 +28,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            \Log::info("update homework statuses job:");
             Queue::push(new UpdateHomeworkStatusesJob());
         })->everyMinute();
     }
