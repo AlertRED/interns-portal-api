@@ -47,9 +47,9 @@ class HomeworkStatusesLang
     private static function getLang() {
         return [
             "Failed" => "Провалено",
-            "NotStarted" => "НеНачалось",
-            "InProgress" => "Выполняется",
-            "OnReview" => "Проверяется",
+            "NotStarted" => "Не началось",
+            "InProgress" => "В работе",
+            "OnReview" => "На проверке",
             "Finished" => "Выполнено"
         ];
     }

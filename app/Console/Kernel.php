@@ -3,10 +3,10 @@
 namespace App\Console;
 
 use App\Console\Commands\Auth\GenRegisterKey;
-use App\Console\Commands\Homework\RefreshHomeworkData;
-use Carbon\Carbon;
+use App\Jobs\HomeworkStatuses\UpdateHomeworkStatusesJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Queue;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,8 +16,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        GenRegisterKey::class,
-        RefreshHomeworkData::class,
+        GenRegisterKey::class
     ];
 
     /**
@@ -29,8 +28,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            \Log::info("test schedule " . json_encode(Carbon::now()));
-        })->everyMinute();
+            \Log::info("update homework statuses job:");
+            Queue::push(new UpdateHomeworkStatusesJob());
+        })->everyTenMinutes();
     }
 
     /**

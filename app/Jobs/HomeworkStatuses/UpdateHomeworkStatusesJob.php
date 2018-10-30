@@ -2,12 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: mxss
- * Date: 27.10.18
- * Time: 15:41
+ * Date: 30.10.18
+ * Time: 11:00
  */
 
-namespace App\Console\Commands\Homework;
-
+namespace App\Jobs\HomeworkStatuses;
 
 use App\Models\Homework\InternHomework;
 use App\Support\Enums\HomeworkStatus;
@@ -15,26 +14,16 @@ use App\Support\InternHomework\Util\InternHomeworkUtils;
 use App\Support\Notifications\Notifiers\EmployeeNotifier;
 use App\Support\Notifications\Notifiers\InternNotifier;
 use Carbon\Carbon;
-use Illuminate\Console\Command;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 
-class RefreshHomeworkData extends Command
+class UpdateHomeworkStatusesJob
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'task:refresh_homeworks_data';
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Обновление статусов и т.д. всех домашек (через cron)';
-
-    public function handle()
-    {
+    public function handle() {
         $homeworks = InternHomework::all();
         foreach ($homeworks as $homework) {
             $startDate = Carbon::parse($homework->homework->start_date);
