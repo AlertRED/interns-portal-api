@@ -62,7 +62,7 @@ class EmployeeNotifier
             $notification->setNotificationTypes(["app", "email"]);
 
             $notification->setData([
-                "mail_view" => "emails.employee.homework.homework_on_review"
+                "mail_view" => "emails.employee.homework.on_review"
             ]);
 
             $notification->setMailData([
@@ -87,7 +87,7 @@ class EmployeeNotifier
             $notification->setNotificationTypes(["app", "email"]);
 
             $notification->setData([
-                "mail_view" => "emails.employee.homework.homework_failed"
+                "mail_view" => "emails.employee.homework.failed"
             ]);
 
             $notification->setMailData([
