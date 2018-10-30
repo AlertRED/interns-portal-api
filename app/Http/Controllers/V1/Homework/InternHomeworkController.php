@@ -110,6 +110,14 @@ class InternHomeworkController extends Controller
             abort(403, "Нет доступа");
         }
 
+        $allowedStatuses = [
+            HomeworkStatus::getKey(HomeworkStatus::InProgress)
+        ];
+
+        if (!in_array($myHomework->status, $allowedStatuses)) {
+            abort(403, "Вы не можете редактировать домашнюю работу с текущим статусом: " . $myHomework->status);
+        }
+
         $myHomework = InternHomeworkRepository::update($myHomework, [
             "github_uri" => isset($request->github_uri) ? $request->github_uri : $myHomework->github_uri,
         ]);
