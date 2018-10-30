@@ -22,7 +22,7 @@ class HomeworkRepository
         $homework = Homework::create($data);
 
         InternHomeworkUtils::assignHomeworkToInterns(
-            $homework, InternshipCourse::find($homework->course_id)
+            $homework
         );
 
         return $homework;

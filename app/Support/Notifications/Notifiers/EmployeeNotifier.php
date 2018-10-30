@@ -28,7 +28,7 @@ class EmployeeNotifier
      */
     public static function notifyEmployeeUserRegistered(User $user) {
         foreach (self::getEmployeesToNotify() as $employee) {
-            $notification = new Notification("Стажер " . $user->getFullName() . "(" . $user->course()->course
+            $notification = new Notification("Стажер " . $user->getFullName() . "(" . $user->course->course
                 . ") зарегистрировался на learn.2-up.ru", $employee);
 
             $notification->setNotificationTypes(["app", "email"]);
