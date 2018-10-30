@@ -24,6 +24,7 @@ class UpdateHomeworkStatusesJob
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function handle() {
+
         $homeworks = InternHomework::all();
         foreach ($homeworks as $homework) {
             $startDate = Carbon::parse($homework->homework->start_date);
@@ -59,6 +60,15 @@ class UpdateHomeworkStatusesJob
                             EmployeeNotifier::notifyEmployeeHomeworkOnReview($homework);
                         }
                     }
+                    break;
+                case null:
+                case "":
+                    InternHomeworkUtils::changeStatus(
+                        null,
+                        $homework,
+                        HomeworkStatus::getKey(HomeworkStatus::NotStarted),
+                        true
+                    );
                     break;
             }
         }
