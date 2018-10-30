@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             \Log::info("update homework statuses job:");
             Queue::push(new UpdateHomeworkStatusesJob());
-        })->everyTenMinutes();
+        })->everyMinute();
     }
 
     /**

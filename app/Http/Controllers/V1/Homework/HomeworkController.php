@@ -182,7 +182,7 @@ class HomeworkController extends Controller
             abort(404, "Поток не найден");
         }
 
-        InternHomeworkUtils::assignHomeworkToInterns($homework, $course);
+        InternHomeworkUtils::assignHomeworkToInterns($homework);
 
         return response()->json([
             "success" => true,

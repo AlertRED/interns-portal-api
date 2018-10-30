@@ -61,12 +61,20 @@ class InternHomeworkUtils
     }
 
     /**
-     * @param Homework $homework
      * @param InternshipCourse $course
      */
-    public static function assignHomeworkToInterns(Homework $homework, InternshipCourse $course) {
+    public static function syncCourseHomeworks(InternshipCourse $course) {
+        foreach (Homework::where("course_id", $course->id)->get() as $homework) {
+            self::assignHomeworkToInterns($homework);
+        }
+    }
+
+    /**
+     * @param Homework $homework
+     */
+    public static function assignHomeworkToInterns(Homework $homework) {
         $interns = User::where("role", UserType::getKey(UserType::User))
-            ->where("course_id", $course->id)
+            ->where("course_id", $homework->course_id)
             ->get();
 
         foreach ($interns as $intern) {
