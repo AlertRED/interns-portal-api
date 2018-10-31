@@ -17,6 +17,19 @@ use Spatie\Fractalistic\ArraySerializer;
 class InternHomeworkTransformer extends TransformerAbstract
 {
     /**
+     * @var bool
+     */
+    private $hideUrl = false;
+
+    /**
+     * InternHomeworkTransformer constructor.
+     * @param bool $hideUrl
+     */
+    public function __construct(bool $hideUrl = false) {
+        $this->hideUrl = $hideUrl;
+    }
+
+    /**
      * @param InternHomework $item
      * @return array
      */
@@ -25,7 +38,7 @@ class InternHomeworkTransformer extends TransformerAbstract
         return [
             'id' => (int)$item->id,
             'user_id' => (int)$item->user_id,
-            'homework' => HomeworkTransformer::transformItem($item->homework),
+            'homework' => HomeworkTransformer::transformItem($item->homework, null, $this->hideUrl),
             'github_uri' => $item->github_uri,
             'status' => HomeworkStatusesLang::getTranslated($item->status),
             'started_at' => (string) $item->started_at,
@@ -36,12 +49,13 @@ class InternHomeworkTransformer extends TransformerAbstract
     /**
      * @param InternHomework $item
      * @param $resourceKey
+     * @param bool $hideUrl
      * @return \Spatie\Fractal\Fractal
      */
-    public static function transformItem(InternHomework $item, $resourceKey = null)
+    public static function transformItem(InternHomework $item, $resourceKey = null, bool $hideUrl = false)
     {
         return fractal()
-            ->item($item, new InternHomeworkTransformer())
+            ->item($item, new InternHomeworkTransformer($hideUrl))
             ->serializeWith(new ArraySerializer())
             ->withResourceName($resourceKey);
     }
@@ -49,12 +63,13 @@ class InternHomeworkTransformer extends TransformerAbstract
     /**
      * @param Collection $items
      * @param $resourceKey
+     * @param bool $hideUrl
      * @return \Spatie\Fractal\Fractal
      */
-    public static function transformCollection(Collection $items, $resourceKey = null)
+    public static function transformCollection(Collection $items, $resourceKey = null, bool $hideUrl = false)
     {
         return fractal()
-            ->collection($items, new InternHomeworkTransformer())
+            ->collection($items, new InternHomeworkTransformer($hideUrl))
             ->serializeWith(new ArraySerializer())
             ->withResourceName($resourceKey);
     }

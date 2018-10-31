@@ -44,7 +44,7 @@ class InternHomeworkController extends Controller
         return response()->json([
             "success" => true,
             "data"    => [
-                "homeworks" => InternHomeworkTransformer::transformCollection($myHomeworks)
+                "homeworks" => InternHomeworkTransformer::transformCollection($myHomeworks, null, true)
             ]
         ]);
     }
@@ -66,7 +66,7 @@ class InternHomeworkController extends Controller
         return response()->json([
             "success" => true,
             "data"    => [
-                "homework" => InternHomeworkTransformer::transformItem($myHomework)
+                "homework" => InternHomeworkTransformer::transformItem($myHomework, null, true)
             ]
         ]);
     }
@@ -131,7 +131,7 @@ class InternHomeworkController extends Controller
         return response()->json([
             "success" => true,
             "data" => [
-                "homework" => InternHomeworkTransformer::transformItem($myHomework)
+                "homework" => InternHomeworkTransformer::transformItem($myHomework, null, true)
             ]
         ]);
     }
