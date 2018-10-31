@@ -10,6 +10,7 @@ namespace App\Support\Notifications\Notifiers;
 
 use App\Jobs\Notifications\ProcessNotificationJob;
 use App\Models\Homework\InternHomework;
+use App\Support\Lang\HomeworkStatusesLang;
 use App\Support\Notifications\Notification;
 use App\User;
 use Queue;
@@ -48,50 +49,28 @@ class EmployeeNotifier
 
     /**
      * @param InternHomework $internHomework
+     * @param string $prevStatus
      */
-    public static function notifyEmployeeHomeworkOnReview(InternHomework $internHomework) {
+    public static function notifyEmployeeHomeworkStatusChanged(InternHomework $internHomework, $prevStatus = "") {
         foreach (self::getEmployeesToNotify() as $employee) {
             $user = $internHomework->user;
 
             $notification = new Notification(
-                "Домашняя работа № " . $internHomework->homework->number . " - " . $internHomework->homework->name .
-                " стажера " . $user->getFullName() . " отправлена на проверку",
-                $employee
+                "Смена статуса домашней работы № " . $internHomework->homework->number . " - " . $internHomework->homework->name .
+                " стажера " . $user->getFullName()
+                , $employee
             );
 
             $notification->setNotificationTypes(["app", "email"]);
 
             $notification->setData([
-                "mail_view" => "emails.employee.homework.homework_on_review"
+                "mail_view" => "emails.employee.homework.status_changed"
             ]);
 
             $notification->setMailData([
-                "homework" => $internHomework
-            ]);
-
-            Queue::push(new ProcessNotificationJob($notification));
-        }
-    }
-
-    /**
-     * @param InternHomework $internHomework
-     */
-    public static function notifyEmployeeHomeworkFailed(InternHomework $internHomework) {
-        foreach (self::getEmployeesToNotify() as $employee) {
-            $user = $internHomework->user;
-            $notification = new Notification(
-                "Домашняя работа № " . $internHomework->homework->number . " - " . $internHomework->homework->name . " стажера " . $user->getFullName() . " провалена",
-                $employee
-            );
-
-            $notification->setNotificationTypes(["app", "email"]);
-
-            $notification->setData([
-                "mail_view" => "emails.employee.homework.homework_failed"
-            ]);
-
-            $notification->setMailData([
-                "homework" => $internHomework
+                "homework" => $internHomework,
+                "prevStatus" => HomeworkStatusesLang::getTranslated($prevStatus),
+                "newStatus" => HomeworkStatusesLang::getTranslated($internHomework->status)
             ]);
 
             Queue::push(new ProcessNotificationJob($notification));

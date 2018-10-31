@@ -10,6 +10,7 @@ namespace App\Support\Notifications\Notifiers;
 
 use App\Jobs\Notifications\ProcessNotificationJob;
 use App\Models\Homework\InternHomework;
+use App\Support\Lang\HomeworkStatusesLang;
 use App\Support\Notifications\Notification;
 use Queue;
 
@@ -17,10 +18,11 @@ class InternNotifier
 {
     /**
      * @param InternHomework $homework
+     * @param string $prevStatus
      */
-    public static function notifyUserHomeworkStatusChanged(InternHomework $homework) {
+    public static function notifyUserHomeworkStatusChanged(InternHomework $homework, $prevStatus = "") {
         $notification = new Notification(
-            "У домашней работы №" . $homework->homework->number . " " . $homework->homework->name . " изменился статус на " . $homework->status
+            "У домашней работы №" . $homework->homework->number . " " . $homework->homework->name . " изменился статус"
             , $homework->user
         );
 
@@ -31,7 +33,9 @@ class InternNotifier
         ]);
 
         $notification->setMailData([
-            "homework" => $homework
+            "homework" => $homework,
+            "newStatus" => HomeworkStatusesLang::getTranslated($homework->status),
+            "prevStatus" => HomeworkStatusesLang::getTranslated($prevStatus),
         ]);
 
         Queue::push(new ProcessNotificationJob($notification));

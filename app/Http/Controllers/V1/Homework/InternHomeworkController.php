@@ -126,7 +126,6 @@ class InternHomeworkController extends Controller
             $myHomework = InternHomeworkUtils::changeStatus(
                 null, $myHomework, HomeworkStatus::getKey(HomeworkStatus::OnReview), true
             );
-            EmployeeNotifier::notifyEmployeeHomeworkOnReview($myHomework);
         }
 
         return response()->json([

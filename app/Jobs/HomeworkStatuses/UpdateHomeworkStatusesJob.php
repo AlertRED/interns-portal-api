@@ -45,7 +45,7 @@ class UpdateHomeworkStatusesJob
                 case HomeworkStatus::getKey(HomeworkStatus::InProgress):
                     if (Carbon::now() > $deadline) {
                         $isHomeworkFailed = strlen($homework->github_uri) < 1;
-                        $homework = InternHomeworkUtils::changeStatus(
+                        InternHomeworkUtils::changeStatus(
                             null,
                             $homework,
                             HomeworkStatus::getKey(
@@ -54,11 +54,6 @@ class UpdateHomeworkStatusesJob
                             ),
                             true
                         );
-                        if ($isHomeworkFailed) {
-                            EmployeeNotifier::notifyEmployeeHomeworkFailed($homework);
-                        } else {
-                            EmployeeNotifier::notifyEmployeeHomeworkOnReview($homework);
-                        }
                     }
                     break;
                 case null:

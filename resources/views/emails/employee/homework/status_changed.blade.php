@@ -7,5 +7,5 @@
 ?>
 
 @section('content')
-    <center>Стажер {{$user->getFullName()}} изменил статус домашней работы {{$homeworkName}} на : {{$homework->status}}</center>
+    <center>Стажер {{$user->getFullName()}} изменил статус домашней работы {{$homeworkName}} c {{ $prevStatus }} на {{$newStatus}}</center>
 @endsection

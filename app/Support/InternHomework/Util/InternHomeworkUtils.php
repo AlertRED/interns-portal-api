@@ -14,8 +14,8 @@ use App\Models\Internship\InternshipCourse;
 use App\Repositories\Homework\InternHomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\Enums\UserType;
+use App\Support\Notifications\Notifiers\EmployeeNotifier;
 use App\Support\Notifications\Notifiers\InternNotifier;
-use App\Support\User\Util\UserRoles;
 use App\User;
 
 class InternHomeworkUtils
@@ -41,6 +41,8 @@ class InternHomeworkUtils
             UserType::getKey(UserType::Employee)
         ];
 
+        $prevStatus = $homework->status;
+
         if (!in_array($homework->status, HomeworkStatus::getKeys())) {
             $homework = InternHomeworkRepository::update($homework, [
                 "status" => HomeworkStatus::getKey(HomeworkStatus::NotStarted)
@@ -55,7 +57,10 @@ class InternHomeworkUtils
             "status" => $newStatus
         ]);
 
-        InternNotifier::notifyUserHomeworkStatusChanged($homework);
+        if ($prevStatus != $homework->status) {
+            EmployeeNotifier::notifyEmployeeHomeworkStatusChanged($homework, $prevStatus);
+            InternNotifier::notifyUserHomeworkStatusChanged($homework, $prevStatus);
+        }
 
         return $homework;
     }
