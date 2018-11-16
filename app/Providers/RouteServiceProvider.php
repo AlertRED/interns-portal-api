@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Homework\InternHomework;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -23,9 +26,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::model('intern_homework', InternHomework::class, function () {
+            throw new NotFoundHttpException();
+        });
     }
 
     /**
@@ -35,11 +40,11 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
-
         $this->mapWebRoutes();
 
-        //
+        $this->mapApiRoutes();
+
+        $this->mapApiV1Routes();
     }
 
     /**
@@ -69,5 +74,15 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     *
+     */
+    protected function mapApiV1Routes()
+    {
+        Route::middleware(['api'])
+            ->namespace($this->namespace . '\V1')
+            ->group(base_path('routes/api_v1.php'));
     }
 }

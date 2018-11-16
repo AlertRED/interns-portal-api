@@ -17,8 +17,12 @@ yarn-error.log
 /public/images
 /public/mix-manifest.json
 
-storage/framework/cache/
+_ide_helper\.php
 
-storage/framework/sessions/
+composer\.lock
 
-storage/framework/views/
+\.phpstorm\.meta\.php
+
+public/\.htaccess
+
+app/Console/Commands/Temp/TempCommand\.php
