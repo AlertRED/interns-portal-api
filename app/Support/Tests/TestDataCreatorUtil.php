@@ -8,6 +8,7 @@
 
 namespace App\Support\Tests;
 
+use App\Models\Internship\InternshipCourse;
 use App\User;
 use Hash;
 
@@ -20,6 +21,11 @@ class TestDataCreatorUtil
      * @var User
      */
     protected $user;
+
+    /**
+     * @var InternshipCourse
+     */
+    protected $course;
 
     /**
      * @param bool $getNew
@@ -43,6 +49,15 @@ class TestDataCreatorUtil
             $this->user = $user->refresh();
         }
         return $this->user;
+    }
+
+    /**
+     *
+     */
+    public function getCourse() {
+        if (!$this->course) {
+
+        }
     }
 
     /**
