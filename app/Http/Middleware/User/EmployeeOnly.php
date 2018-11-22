@@ -19,7 +19,8 @@ class EmployeeOnly
         $me = auth("api")->user();
 
         $allowedRoles = [
-            UserType::getKey(UserType::Employee)
+            UserType::getKey(UserType::Employee),
+            UserType::getKey(UserType::Admin)
         ];
 
         if (!in_array($me->role, $allowedRoles)) {

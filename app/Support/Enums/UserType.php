@@ -17,4 +17,6 @@ final class UserType extends Enum
     const User = 1;
 
     const Employee = 10;
+
+    const Admin = 100;
 }
