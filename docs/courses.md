@@ -16,13 +16,35 @@ Success response:
         "courses": [
             {
                 "id": 1,
-                "course": "FrontEnd2"
+                "course": "FrontEnd2",
+                "leads": []
             },
             {
                 "id": 2,
-                "course": "BackEnd1"
+                "course": "BackEnd1",
+                "leads": []
             }
         ]
+    }
+}
+```
+## Get course
+**Endpoint(GET):** /api/v1/course/{course_id}?api_token=someToken
+
+**Params list:** (option parameters are used for filtering)
++ api_token*
++ course_id*
+
+Success response:
+```json
+{
+    "success": true,
+    "data": {
+        "course": {
+            "id": 2,
+            "course": "BackEnd1",
+            "leads": []
+        }
     }
 }
 ```
