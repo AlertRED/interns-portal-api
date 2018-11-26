@@ -12,6 +12,7 @@ use App\Models\Internship\CourseLead;
 use App\Models\Internship\InternshipCourse;
 use App\Models\Permissions\CourseUserRight;
 use App\Support\Enums\UserCourseRight;
+use App\Support\Enums\UserType;
 use App\User;
 
 class PermissionPool
@@ -31,7 +32,10 @@ class PermissionPool
         $isCourseLead = CourseLead::where("course_id", $course->id)
             ->where("user_id", $user)
             ->first();
-        if ($isCourseLead) {
+
+        $allAllowed = $user->role == UserType::Admin || $isCourseLead;
+
+        if ($allAllowed) {
             foreach ($myRights as $right) {
                 $myRights[$right] = true;
             }
@@ -54,10 +58,28 @@ class PermissionPool
      * @param string $right
      * @return bool
      */
-    public static function ifUserHaveCoursePermission(User $me, InternshipCourse $course, string $right) {
+    public static function ifUserHasCoursePermission(User $me, InternshipCourse $course, string $right) {
         if (!in_array($right, UserCourseRight::getKeys())) {
             return false;
         }
-        return self::getUserCourseRights($me, $course)[$right];
+        return isset(self::getUserCourseRights($me, $course)[$right]) ?
+            self::getUserCourseRights($me, $course)[$right] : false;
+    }
+
+    /**
+     * @param InternshipCourse $course
+     * @param User $user
+     * @param string $right
+     * @param bool $allowed
+     */
+    public static function updateUserCourseRight(InternshipCourse $course, User $user, string $right, bool $allowed) {
+        $right = CourseUserRight::firstOrCreate([
+            "course_id" => $course->id,
+            "user_id" => $user->id,
+            "right" => $right
+        ]);
+        $right->update([
+            "allowed" => $allowed
+        ]);
     }
 }

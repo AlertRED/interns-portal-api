@@ -12,11 +12,11 @@ use BenSampo\Enum\Enum;
 
 final class UserType extends Enum
 {
-    const Banned = -1;
-    const None = 0;
-    const User = 1;
+    const Banned = "Banned";
+    const None = "None";
+    const User = "User";
 
-    const Employee = 10;
+    const Employee = "Employee";
 
-    const Admin = 100;
+    const Admin = "Admin";
 }

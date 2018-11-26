@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCourseUserRightsTable extends Migration
+class CreateCourseLeadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,23 @@ class CreateCourseUserRightsTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_user_rights', function (Blueprint $table) {
+        Schema::create('course_leads', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer("user_id")->unsigned()->nullable(false);
+            $table->integer('user_id')
+                ->nullable()
+                ->unsigned()
+                ->default(null);
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->integer("course_id")->unsigned();
+            $table->integer("course_id")
+                ->nullable(true)
+                ->unsigned();
             $table->foreign('course_id')
                 ->references('id')->on('internship_courses')
                 ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->string("right");
-            $table->boolean("allowed")->default(false);
+                ->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -38,6 +41,6 @@ class CreateCourseUserRightsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_user_rights');
+        Schema::dropIfExists('course_leads');
     }
 }

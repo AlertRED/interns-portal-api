@@ -14,8 +14,11 @@ use App\Models\Homework\Homework;
 use App\Models\Internship\InternshipCourse;
 use App\Repositories\Homework\HomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
+use App\Support\Enums\UserCourseRight;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
 use App\Support\Lang\HomeworkStatusesLang;
+use App\Support\Permissions\PermissionPool;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -87,6 +90,12 @@ class HomeworkController extends Controller
             abort(404, "Поток не найден");
         }
 
+        $me = User::find(auth()->user()->id);
+
+        if (!PermissionPool::ifUserHasCoursePermission($me, $course, UserCourseRight::EditHomeworks)) {
+            abort(403, __("homeworks.homework.no_edit_access"));
+        }
+
         $homework = HomeworkRepository::create([
             "name" => $request->name,
             "number" => $request->number,
@@ -110,9 +119,15 @@ class HomeworkController extends Controller
      */
     public function get(Homework $homework)
     {
+        if (!PermissionPool::ifUserHasCoursePermission(
+            User::find(auth()->user()->id), $homework->course, UserCourseRight::ViewHomeworks
+        )) {
+            abort(403, __("homeworks.homework.no_view_access"));
+        }
+
         return response()->json([
             "success" => true,
-            "data"    => [
+            "data" => [
                 "homework" => HomeworkTransformer::transformItem($homework)
             ]
         ]);
@@ -131,6 +146,12 @@ class HomeworkController extends Controller
             "url"       => "string|min:4|max:255",
             "deadline"  => "string",
         ]);
+
+        if (!PermissionPool::ifUserHasCoursePermission(
+            User::find(auth()->user()->id), $homework->course, UserCourseRight::EditHomeworks
+        )) {
+            abort(403, __("homeworks.homework.no_edit_access"));
+        }
 
         $homework->update([
             "name"      => $request->name ? $request->name : $homework->name,
@@ -153,6 +174,12 @@ class HomeworkController extends Controller
      * @throws \Exception
      */
     public function delete(Homework $homework) {
+        if (!PermissionPool::ifUserHasCoursePermission(
+            User::find(auth()->user()->id), $homework->course, UserCourseRight::EditHomeworks
+        )) {
+            abort(403, __("homeworks.homework.no_edit_access"));
+        }
+
         $homework->delete();
 
         return response()->json([
@@ -174,6 +201,12 @@ class HomeworkController extends Controller
 
         if (!$homework) {
             abort(404, "Домашняя работа не найдена");
+        }
+
+        if (!PermissionPool::ifUserHasCoursePermission(
+            User::find(auth()->user()->id), $homework->course, UserCourseRight::EditHomeworks
+        )) {
+            abort(403, __("homeworks.homework.no_edit_access"));
         }
 
         $course = InternshipCourse::find($request->course_id);

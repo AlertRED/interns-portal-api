@@ -53,6 +53,13 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
             });
         });
 
+        Route::group([
+            'prefix' => 'courses'
+        ], function ()
+        {
+            Route::get('/all_permissions', 'Course\InternshipCoursesController@allPermissionsList');
+        });
+
         /*
          |-----------------------------------------------------------------------
          | Employee only routes
@@ -93,6 +100,29 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
                 Route::delete('/{homework}', 'Homework\HomeworkController@delete');
 
                 Route::post('/{homework}/course', 'Homework\HomeworkController@addCourse');
+            });
+
+            Route::group([
+                'prefix' => 'course/{internship_course}'
+            ], function () {
+                Route::get('/', 'Course\InternshipCoursesController@get');
+            });
+        });
+
+        /*
+         |-----------------------------------------------------------------------
+         | Admin only routes
+         |-----------------------------------------------------------------------
+         */
+
+        Route::group([
+            'middleware' => ['admin-only']
+        ], function ()
+        {
+            Route::group([
+                'prefix' => 'course/{internship_course}'
+            ], function () {
+                Route::patch('/user/{user}/permissions', 'Course\InternshipCoursesController@updateUserPermissions');
             });
         });
     });

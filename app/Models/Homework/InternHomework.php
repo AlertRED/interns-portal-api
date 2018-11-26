@@ -65,6 +65,13 @@ class InternHomework extends Model
     }
 
     /**
+     * @return mixed
+     */
+    public function getCourse() {
+        return $this->homework->course;
+    }
+
+    /**
      * @param Collection $items
      * @return Collection
      */
