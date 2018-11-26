@@ -31,6 +31,7 @@ class EmployeeNotifier
         $usersToNotify = CourseLead::where("course_id", $course->id)->get();
         $usersToNotify = $usersToNotify->merge(CourseUserRight::where("course_id", $course->id)
             ->where("right", UserCourseRight::ViewHomeworks)
+            ->where("allowed", true)
             ->get());
 
         foreach ($usersToNotify as $lead) {
