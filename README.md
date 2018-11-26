@@ -8,3 +8,4 @@
 + [Intern homeworks](https://github.com/2UP/interns-portal-api/blob/docs-v1/docs/intern-homeworks.md)
 + [Internship courses](https://github.com/2UP/interns-portal-api/blob/docs-v1/docs/courses.md)
 + [Notifications](https://github.com/2UP/interns-portal-api/blob/docs-v1/docs/notifications.md)
++ [Courses](https://github.com/2UP/interns-portal-api/blob/docs-v1/docs/courses.md)
