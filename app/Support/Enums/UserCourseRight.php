@@ -12,9 +12,7 @@ use BenSampo\Enum\Enum;
 
 final class UserCourseRight extends Enum
 {
-    const None = 0;
-
-    const ViewHomeworks = 1;
-    const EditHomeworks = 2;
-    const ChangeHomeworkStatuses = 3;
+    const ViewHomeworks = "ViewHomeworks";
+    const EditHomeworks = "EditHomeworks";
+    const ChangeHomeworkStatuses = "ChangeHomeworkStatuses";
 }
