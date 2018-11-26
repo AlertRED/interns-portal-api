@@ -5,7 +5,7 @@
 
 **User group access:** Employee only
 
-**Params list:** (option parameters are used for filtering)
+**Params list:**
 + api_token*
 
 Success response:
@@ -31,7 +31,7 @@ Success response:
 ## Get course
 **Endpoint(GET):** /api/v1/course/{course_id}?api_token=someToken
 
-**Params list:** (option parameters are used for filtering)
+**Params list:**
 + api_token*
 + course_id*
 
