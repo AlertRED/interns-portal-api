@@ -8,7 +8,9 @@
 
 namespace App\Http\Transformers\V1\Course;
 
+use App\Http\Transformers\V1\User\UserTransformer;
 use App\Models\Internship\InternshipCourse;
+use App\Support\Courses\CoursesUtils;
 use Illuminate\Support\Collection;
 use League\Fractal\TransformerAbstract;
 use Spatie\Fractalistic\ArraySerializer;
@@ -24,6 +26,7 @@ class InternshipCourseTransformer extends TransformerAbstract
         return [
             'id' => (int)$item->id,
             'course' => $item->course,
+            "leads" => UserTransformer::transformCollection(CoursesUtils::getCourseLeads($item))
         ];
     }
 

@@ -13,9 +13,11 @@ use App\Http\Transformers\V1\Homework\InternHomeworkTransformer;
 use App\Models\Homework\InternHomework;
 use App\Repositories\Homework\InternHomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
+use App\Support\Enums\UserCourseRight;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
 use App\Support\Lang\HomeworkStatusesLang;
 use App\Support\Notifications\Notifiers\EmployeeNotifier;
+use App\Support\Permissions\PermissionPool;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -81,6 +83,12 @@ class InternHomeworkController extends Controller
 
         if (!$user) {
             abort(404, "Пользователь не найден");
+        }
+
+        if (!PermissionPool::ifUserHasCoursePermission(
+            $user, $user->course, UserCourseRight::ViewHomeworks
+        )) {
+            abort(403, __("homeworks.homework.no_view_access"));
         }
 
         return response()->json([
@@ -156,6 +164,12 @@ class InternHomeworkController extends Controller
             abort(403, "Нет доступа");
         }
 
+        if (!PermissionPool::ifUserHasCoursePermission(
+            $user, $user->course, UserCourseRight::ViewHomeworks
+        )) {
+            abort(403, __("homeworks.homework.no_view_access"));
+        }
+
         return response()->json([
             "success" => true,
             "data"    => [
@@ -178,6 +192,12 @@ class InternHomeworkController extends Controller
 
         if ($homework->user_id != $user->id) {
             abort(400, "Домашняя работа не принадлежит пользователю");
+        }
+
+        if (!PermissionPool::ifUserHasCoursePermission(
+            $user, $user->course, UserCourseRight::ChangeHomeworkStatuses
+        )) {
+            abort(403, __("homeworks.homework.no_change_status_access"));
         }
 
         if (isset($request->status)) {

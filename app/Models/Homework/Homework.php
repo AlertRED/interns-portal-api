@@ -44,4 +44,11 @@ class Homework extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function course() {
+        return $this->hasOne("App\Models\Internship\InternshipCourse", "id", "course_id");
+    }
 }
