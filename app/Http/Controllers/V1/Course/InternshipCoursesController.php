@@ -69,12 +69,30 @@ class InternshipCoursesController extends Controller
     }
 
     /**
+     * @param InternshipCourse $course
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserCoursePermissions(InternshipCourse $course, User $user) {
+        if ($user->role !== UserType::Employee) {
+            abort(422, "Пользоваель должен быть сотрудником");
+        }
+
+        return response()->json ([
+            "success" => true,
+            "data" => [
+                "permissions" => PermissionPool::getUserCourseRights($user, $course)
+            ]
+        ]);
+    }
+
+    /**
      * @param UpdateUserPermissions $request
      * @param InternshipCourse $course
      * @param User $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateUserPermissions(UpdateUserPermissions $request, InternshipCourse $course, User $user) {
+    public function updateUserCoursePermissions(UpdateUserPermissions $request, InternshipCourse $course, User $user) {
         if ($user->role !== UserType::Employee) {
             abort(422, "Пользоваель должен быть сотрудником");
         }

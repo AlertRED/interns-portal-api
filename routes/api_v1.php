@@ -117,12 +117,12 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
 
         Route::group([
             'middleware' => ['admin-only']
-        ], function ()
-        {
+        ], function () {
             Route::group([
                 'prefix' => 'course/{internship_course}'
             ], function () {
-                Route::patch('/user/{user}/permissions', 'Course\InternshipCoursesController@updateUserPermissions');
+                Route::get('/user/{user}/permissions', 'Course\InternshipCoursesController@getUserCoursePermissions');
+                Route::patch('/user/{user}/permissions', 'Course\InternshipCoursesController@updateUserCoursePermissions');
             });
         });
     });
