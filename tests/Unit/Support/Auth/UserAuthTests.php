@@ -17,7 +17,7 @@ class UserAuthTests extends TestCase
      * @return void
      * @throws \Exception
      */
-    public function regenUserAPITokenTest()
+    public function RegenApiToken_DataCorrect_Success()
     {
         $dataUtil = new TestDataCreatorUtil();
         $user = $dataUtil->getUser();
@@ -37,7 +37,7 @@ class UserAuthTests extends TestCase
      * @test
      * @throws \Exception
      */
-    public function updateUserRoleTest()
+    public function UpdateUserRole_DataCorrect_Success()
     {
         $dataUtil = new TestDataCreatorUtil();
         $user = $dataUtil->getUser();

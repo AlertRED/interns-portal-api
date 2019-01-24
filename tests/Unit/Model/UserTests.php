@@ -17,7 +17,7 @@ class UserTests extends TestCase
      * @test
      * @throws \Exception
      */
-    public function getCourseLeadTest() {
+    public function GetCourseLead_DataCorrect_Success() {
         $util = new TestDataCreatorUtil();
         $user = $util->getUser();
         $course = $util->getCourse();

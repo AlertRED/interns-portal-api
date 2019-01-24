@@ -18,7 +18,7 @@ class AuthControllerTests extends TestCase
      * @test
      * @throws \Exception
      */
-    public function testGetUser()
+    public function GetUser_DataCorrect_Success()
     {
         $dataUtil = new TestDataCreatorUtil();
         $user = $dataUtil->getUser();
@@ -38,7 +38,7 @@ class AuthControllerTests extends TestCase
      * @test
      * @throws \Exception
      */
-    public function testCheckApiToken() {
+    public function CheckApiToken_DataCorrect_Success() {
         $dataUtil = new TestDataCreatorUtil();
         $user = $dataUtil->getUser();
 
@@ -53,7 +53,7 @@ class AuthControllerTests extends TestCase
     /**
      * @test
      */
-    public function testCheckInvalidApiToken() {
+    public function CheckApiToken_InvalidToken_AuthFails() {
         $response = $this->get("/api/v1/check_api_token?api_token=" . str_random(30));
 
         $response->assertStatus(401);

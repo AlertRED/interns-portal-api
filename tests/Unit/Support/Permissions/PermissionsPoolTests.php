@@ -20,7 +20,7 @@ class PermissionsPoolTests extends TestCase
      * @test
      * @throws \Exception
      */
-    public function Test_getMyCoursePermissions() {
+    public function GetMyCoursePermissions_DataCorrect_Success() {
         $util = new TestDataCreatorUtil();
         $user = $util->getUser();
         $course = $util->getCourse();
