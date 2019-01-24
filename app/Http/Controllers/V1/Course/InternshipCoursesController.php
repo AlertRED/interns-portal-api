@@ -58,8 +58,7 @@ class InternshipCoursesController extends Controller
      * @param InternshipCourse $course
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get(InternshipCourse $course)
-    {
+    public function get(InternshipCourse $course) {
         return response()->json([
             "success" => true,
             "data" => [

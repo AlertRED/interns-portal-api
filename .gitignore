@@ -26,3 +26,5 @@ composer\.lock
 public/\.htaccess
 
 app/Console/Commands/Temp/TempCommand\.php
+
+\.env\.testing

@@ -14,7 +14,6 @@ use App\Models\Internship\CourseLead;
 use App\Models\Internship\InternshipCourse;
 use App\Models\Permissions\CourseUserRight;
 use App\Support\Enums\UserCourseRight;
-use App\Support\Enums\UserType;
 use App\Support\Lang\HomeworkStatusesLang;
 use App\Support\Notifications\Notification;
 use App\User;
