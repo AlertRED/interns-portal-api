@@ -88,11 +88,11 @@ class InternshipCoursesController extends Controller
     /**
      * @param UpdateUserPermissions $request
      * @param InternshipCourse $course
-     * @param User $user
+     * @param User $targetUser
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateUserCoursePermissions(UpdateUserPermissions $request, InternshipCourse $course, User $user) {
-        if ($user->role !== UserType::Employee) {
+    public function updateUserCoursePermissions(UpdateUserPermissions $request, InternshipCourse $course, User $targetUser) {
+        if ($targetUser->role !== UserType::Employee) {
             abort(422, "Пользоваель должен быть сотрудником");
         }
 
@@ -100,7 +100,7 @@ class InternshipCoursesController extends Controller
             foreach ($request->permissions as $key => $val) {
                 $right = CourseUserRight::firstOrCreate([
                     "course_id" => $course->id,
-                    "user_id" => $user->id,
+                    "user_id" => $targetUser->id,
                     "right" => $key,
                 ]);
                 CourseUserRightsRepository::update($right, [
@@ -112,7 +112,7 @@ class InternshipCoursesController extends Controller
         return response()->json([
             "success" => true,
             "data" => [
-                "permissions" => PermissionPool::getUserCourseRights($user,$course)
+                "permissions" => PermissionPool::getUserCourseRights($targetUser,$course)
             ]
         ]);
     }

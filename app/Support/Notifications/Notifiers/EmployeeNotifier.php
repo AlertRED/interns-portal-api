@@ -45,7 +45,7 @@ class EmployeeNotifier
      */
     public static function notifyEmployeeUserRegistered(User $user) {
         foreach (self::getCourseEmployeesToNotify($user->course) as $employee) {
-            $notification = new Notification("Стажер " . $user->getFullName() . "(" . $user->course->course
+            $notification = new Notification("Стажер " . $user->fullName() . "(" . $user->course->course
                 . ") зарегистрировался на learn.2-up.ru", $employee);
 
             $notification->setNotificationTypes(["app", "email"]);
@@ -56,7 +56,7 @@ class EmployeeNotifier
 
             $notification->setMailData([
                 "user" => $user,
-                "fullName" => $user->getFullName()
+                "fullName" => $user->fullName()
             ]);
 
             Queue::push(new ProcessNotificationJob($notification));
@@ -73,7 +73,7 @@ class EmployeeNotifier
 
             $notification = new Notification(
                 "Смена статуса домашней работы № " . $internHomework->homework->number . " - " . $internHomework->homework->name .
-                " стажера " . $user->getFullName()
+                " стажера " . $user->fullName()
                 , $employee
             );
 

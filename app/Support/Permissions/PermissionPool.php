@@ -33,20 +33,20 @@ class PermissionPool
             ->where("user_id", $user)
             ->first();
 
-        $allAllowed = $user->role == UserType::Admin || $isCourseLead;
-
-        if ($allAllowed) {
-            foreach ($myRights as $right) {
-                $myRights[$right] = true;
-            }
-        }
-
         foreach (UserCourseRight::getKeys() as $right) {
             $userRight = CourseUserRight::where("course_id", $course->id)
                 ->where("user_id", $user->id)
                 ->where("right", $right)
                 ->first();
             $myRights[$right] = $userRight ? boolval($userRight->allowed) : false;
+        }
+
+        $allAllowed = $user->role == UserType::Admin || $isCourseLead;
+
+        if ($allAllowed) {
+            foreach ($myRights as $key => $right) {
+                $myRights[$key] = true;
+            }
         }
 
         return $myRights;

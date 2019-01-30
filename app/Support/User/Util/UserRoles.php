@@ -19,7 +19,7 @@ class UserRoles
      * @param string $newRole
      * @return User
      */
-    public static function updateUserRole(User $user, string $newRole)
+    public static function updateUserRole(User $user, string $newRole) : User
     {
         if (in_array($newRole, UserType::getKeys())) {
             $user->update([

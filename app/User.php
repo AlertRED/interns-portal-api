@@ -58,8 +58,16 @@ class User extends Authenticatable
     /**
      * @return string
      */
-    public function getFullName() {
+    public function fullName() {
         return $this->first_name . " " . $this->last_name;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function homeworks()
+    {
+        return $this->hasOne("App\Models\Homework\InternHomework", "user_id");
     }
 
     /**
