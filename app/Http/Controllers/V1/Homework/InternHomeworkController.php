@@ -190,12 +190,14 @@ class InternHomeworkController extends Controller
             "github_uri" => "string|min:4|max:255"
         ]);
 
+        $me = User::find(auth("api")->user()->id);
+
         if ($homework->user_id != $user->id) {
             abort(400, "Домашняя работа не принадлежит пользователю");
         }
 
         if (!PermissionPool::ifUserHasCoursePermission(
-            $user, $user->course, UserCourseRight::ChangeHomeworkStatuses
+            $me, $user->course, UserCourseRight::ChangeHomeworkStatuses
         )) {
             abort(403, __("homeworks.homework.no_change_status_access"));
         }
@@ -219,4 +221,6 @@ class InternHomeworkController extends Controller
             ]
         ]);
     }
+
+
 }
