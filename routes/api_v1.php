@@ -81,9 +81,11 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
             ], function ()
             {
                 Route::get('/{user}', 'User\UsersController@getUser');
+                Route::get('/{user}/homeworks/avg_score', 'Homework\InternHomeworkController@getAvgHomeworkScore');
                 Route::get('/{user}/homeworks', 'Homework\InternHomeworkController@getUserHomeworks');
                 Route::get('/{user}/homework/{intern_homework}', 'Homework\InternHomeworkController@getUserHomework');
                 Route::patch('/{user}/homework/{intern_homework}', 'Homework\InternHomeworkController@editUserHomework');
+                Route::patch('/{user}/homework/{intern_homework}/score', 'Homework\InternHomeworkController@setHomeworkScore');
             });
 
             /* Homeworks */
