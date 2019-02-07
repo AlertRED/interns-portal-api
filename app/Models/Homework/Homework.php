@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework whereName($value)
  * @property string|null $start_date
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework whereStartDate($value)
+ * @property-read \App\Models\Internship\InternshipCourse $course
  */
 class Homework extends Model
 {

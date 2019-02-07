@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permissions\CourseUserRight whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permissions\CourseUserRight whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Internship\InternshipCourse $course
+ * @property-read \App\User $user
  */
 class CourseUserRight extends Model
 {

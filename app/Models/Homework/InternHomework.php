@@ -35,6 +35,8 @@ use Illuminate\Support\Collection;
  * @mixin \Eloquent
  * @property-read \App\Models\Homework\Homework $homework
  * @property-read \App\User $user
+ * @property int $score
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\InternHomework whereScore($value)
  */
 class InternHomework extends Model
 {
