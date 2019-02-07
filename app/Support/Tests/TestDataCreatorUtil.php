@@ -53,22 +53,47 @@ class TestDataCreatorUtil
     private $courseLead;
 
     /**
+     * TestDataCreatorUtil constructor.
+     */
+    public function __construct()
+    {
+        $this->users = collect();
+    }
+
+    /**
      * @return User
      */
     public function getUser() : User {
         if (!$this->user) {
-            $user = User::create([
-                "login" => "testUser_" . str_random(10),
-                "email" => "testEmail" . str_random(7) . "@domain.test",
-                "course_id" => $this->getCourse()->id,
-                "first_name" => "testName" . str_random(5),
-                "api_token" => str_random(30),
-                "password" => Hash::make('1234')
-            ]);
+            $user = $this->createUser();
 
             $this->user = $user->refresh();
         }
         return $this->user;
+    }
+
+    /**
+     * @return User
+     */
+    public function getNewUser() : User {
+        $user = $this->createUser();
+        $this->users->push($user);
+        return $user;
+    }
+
+    /**
+     * @return User
+     */
+    private function createUser() : User
+    {
+        return User::create([
+            "login" => "testUser_" . str_random(10),
+            "email" => "testEmail" . str_random(7) . "@domain.test",
+            "course_id" => $this->getCourse()->id,
+            "first_name" => "testName" . str_random(5),
+            "api_token" => str_random(30),
+            "password" => Hash::make('1234')
+        ]);
     }
 
     /**
@@ -128,6 +153,9 @@ class TestDataCreatorUtil
     public function cleanUp() {
         if ($this->user) {
             $this->user->delete();
+        }
+        foreach ($this->users as $user) {
+            $user->delete();
         }
         if ($this->homework) {
             $this->homework->delete();
