@@ -40,6 +40,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCourseId($value)
  * @property-read \App\Models\Internship\InternshipCourse $course
  * @property-read \App\Models\Internship\CourseLead $courseLead
+ * @property-read \App\Models\Homework\InternHomework $homeworks
  */
 class User extends Authenticatable
 {
@@ -63,11 +64,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function homeworks()
     {
-        return $this->hasOne("App\Models\Homework\InternHomework", "user_id");
+        return $this->hasMany("App\Models\Homework\InternHomework", "user_id");
     }
 
     /**
