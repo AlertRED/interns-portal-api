@@ -41,9 +41,22 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "success",
             "schema": {
-              "$ref": "#/definitions/User"
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/definitions/User"
+                    }
+                  }
+                }
+              },
             }
           },
         }
@@ -60,7 +73,8 @@
       "properties": {
         "id": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "example": 1
         },
         "login": {
           "type": "string"
