@@ -107,7 +107,7 @@
         }
       },
     },
-    "/user/{id}/homework/{internHomeworkId}/score": {
+    "/user/{userId}/homework/{internHomeworkId}/score": {
       "patch": {
         "tags": [
           "user"
@@ -118,7 +118,7 @@
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "userId",
             "in": "path",
             "description": "User ID",
             "required": true,
@@ -128,11 +128,19 @@
           {
             "name": "internHomeworkId",
             "in": "path",
-            "description": "daw",
+            "description": "InternHomework ID",
             "required": true,
             "type": "integer",
             "format": "int64"
-          }
+          },
+          {
+            "name": "score",
+            "in": "query",
+            "description": "score between 0 and 5",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
         ],
         "responses": {
           "200": {
