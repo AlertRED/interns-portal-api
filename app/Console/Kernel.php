@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\Auth\GenRegisterKey;
+use App\Console\Commands\Testing\MailTesting;
 use App\Jobs\HomeworkStatuses\UpdateHomeworkStatusesJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        GenRegisterKey::class
+        GenRegisterKey::class,
+        MailTesting::class
     ];
 
     /**
