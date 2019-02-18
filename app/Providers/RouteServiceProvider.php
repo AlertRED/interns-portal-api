@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Homework\InternHomework;
+use App\Models\Internship\InternshipCourse;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -29,6 +30,10 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         Route::model('intern_homework', InternHomework::class, function () {
+            throw new NotFoundHttpException();
+        });
+
+        Route::model('internship_course', InternshipCourse::class, function () {
             throw new NotFoundHttpException();
         });
     }

@@ -34,6 +34,9 @@ use Illuminate\Support\Collection;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\InternHomework whereUserId($value)
  * @mixin \Eloquent
  * @property-read \App\Models\Homework\Homework $homework
+ * @property-read \App\User $user
+ * @property int $score
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\InternHomework whereScore($value)
  */
 class InternHomework extends Model
 {
@@ -61,6 +64,13 @@ class InternHomework extends Model
     public function user()
     {
         return $this->hasOne("App\User", "id", "user_id");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCourse() {
+        return $this->homework->course;
     }
 
     /**

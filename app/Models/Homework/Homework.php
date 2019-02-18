@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework whereName($value)
  * @property string|null $start_date
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework whereStartDate($value)
+ * @property-read \App\Models\Internship\InternshipCourse $course
  */
 class Homework extends Model
 {
@@ -44,4 +45,11 @@ class Homework extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function course() {
+        return $this->hasOne("App\Models\Internship\InternshipCourse", "id", "course_id");
+    }
 }

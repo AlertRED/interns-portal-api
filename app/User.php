@@ -38,6 +38,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRole($value)
  * @property int|null $course_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCourseId($value)
+ * @property-read \App\Models\Internship\InternshipCourse $course
+ * @property-read \App\Models\Internship\CourseLead $courseLead
+ * @property-read \App\Models\Homework\InternHomework $homeworks
  */
 class User extends Authenticatable
 {
@@ -56,8 +59,16 @@ class User extends Authenticatable
     /**
      * @return string
      */
-    public function getFullName() {
+    public function fullName() {
         return $this->first_name . " " . $this->last_name;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function homeworks()
+    {
+        return $this->hasMany("App\Models\Homework\InternHomework", "user_id");
     }
 
     /**
@@ -66,5 +77,13 @@ class User extends Authenticatable
     public function course()
     {
         return $this->hasOne("App\Models\Internship\InternshipCourse", "id", "course_id");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function courseLead()
+    {
+        return $this->hasOne("App\Models\Internship\CourseLead", "user_id", "id");
     }
 }

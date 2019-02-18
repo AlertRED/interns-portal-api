@@ -10,6 +10,10 @@ namespace App\Support\Notifications\Notifiers;
 
 use App\Jobs\Notifications\ProcessNotificationJob;
 use App\Models\Homework\InternHomework;
+use App\Models\Internship\CourseLead;
+use App\Models\Internship\InternshipCourse;
+use App\Models\Permissions\CourseUserRight;
+use App\Support\Enums\UserCourseRight;
 use App\Support\Lang\HomeworkStatusesLang;
 use App\Support\Notifications\Notification;
 use App\User;
@@ -18,18 +22,30 @@ use Queue;
 class EmployeeNotifier
 {
     /**
+     * @param InternshipCourse $course
      * @return User[]|\Illuminate\Database\Eloquent\Collection
      */
-    private static function getEmployeesToNotify() {
-        return User::where("role", "Employee")->get();
+    private static function getCourseEmployeesToNotify(InternshipCourse $course) {
+        $users = collect();
+        $usersToNotify = CourseLead::where("course_id", $course->id)->get();
+        $usersToNotify = $usersToNotify->merge(CourseUserRight::where("course_id", $course->id)
+            ->where("right", UserCourseRight::ViewHomeworks)
+            ->where("allowed", true)
+            ->get());
+
+        foreach ($usersToNotify as $lead) {
+            $users->push($lead->user);
+        }
+
+        return $users;
     }
 
     /**
      * @param User $user
      */
     public static function notifyEmployeeUserRegistered(User $user) {
-        foreach (self::getEmployeesToNotify() as $employee) {
-            $notification = new Notification("Стажер " . $user->getFullName() . "(" . $user->course->course
+        foreach (self::getCourseEmployeesToNotify($user->course) as $employee) {
+            $notification = new Notification("Стажер " . $user->fullName() . "(" . $user->course->course
                 . ") зарегистрировался на learn.2-up.ru", $employee);
 
             $notification->setNotificationTypes(["app", "email"]);
@@ -40,7 +56,7 @@ class EmployeeNotifier
 
             $notification->setMailData([
                 "user" => $user,
-                "fullName" => $user->getFullName()
+                "fullName" => $user->fullName()
             ]);
 
             Queue::push(new ProcessNotificationJob($notification));
@@ -52,12 +68,12 @@ class EmployeeNotifier
      * @param string $prevStatus
      */
     public static function notifyEmployeeHomeworkStatusChanged(InternHomework $internHomework, $prevStatus = "") {
-        foreach (self::getEmployeesToNotify() as $employee) {
+        foreach (self::getCourseEmployeesToNotify($internHomework->getCourse()) as $employee) {
             $user = $internHomework->user;
 
             $notification = new Notification(
                 "Смена статуса домашней работы № " . $internHomework->homework->number . " - " . $internHomework->homework->name .
-                " стажера " . $user->getFullName()
+                " стажера " . $user->fullName()
                 , $employee
             );
 

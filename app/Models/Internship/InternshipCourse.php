@@ -8,7 +8,6 @@
 
 namespace App\Models\Internship;
 
-
 use Illuminate\Database\Eloquent\Model;
 
 /**

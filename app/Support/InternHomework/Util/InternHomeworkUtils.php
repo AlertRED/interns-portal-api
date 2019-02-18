@@ -25,8 +25,12 @@ class InternHomeworkUtils
      * @param InternHomework $homework
      * @return bool
      */
-    public static function isUserHasHomeworkAccess($me, InternHomework $homework) {
-        return $me->id == $homework->user_id || $me->role == UserType::getKey(UserType::Employee);
+    public static function isUserHasHomeworkAccess($me, InternHomework $homework) : bool {
+        $result = $me->id == $homework->user_id;
+        $result = !$result ? $me->role == UserType::getKey(UserType::Admin) : $result;
+        // TODO: get from permission pool
+        //$result = !$result ? CourseLead::where("user_id"$me->id) : $result;
+        return $result;
     }
 
     /**

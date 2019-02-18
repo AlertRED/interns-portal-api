@@ -1,11 +1,17 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: mxss
+ * Date: 26.11.18
+ * Time: 11:12
+ */
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\User;
 
 use App\Support\Enums\UserType;
 use Closure;
 
-class EmployeeOnly
+class AdminOnly
 {
     /**
      * Handle an incoming request.
@@ -19,7 +25,6 @@ class EmployeeOnly
         $me = auth("api")->user();
 
         $allowedRoles = [
-            UserType::getKey(UserType::Employee),
             UserType::getKey(UserType::Admin)
         ];
 
