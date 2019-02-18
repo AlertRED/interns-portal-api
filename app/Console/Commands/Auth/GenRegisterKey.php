@@ -38,7 +38,8 @@ class GenRegisterKey extends Command
         $this->info("Выберите роль:");
         $allowedRoles = [
             UserType::getKey(UserType::User),
-            UserType::getKey(UserType::Employee)
+            UserType::getKey(UserType::Employee),
+            UserType::getKey(UserType::Admin)
         ];
 
         foreach ($allowedRoles as $key => $allowedRole) {
@@ -53,23 +54,28 @@ class GenRegisterKey extends Command
         foreach (InternshipCourse::all() as $course) {
             $this->info($course->id . " : " . $course->course);
         }
-        $selectedCourseId = intval($this->ask("Введите id:"));
+        $selectedCourseId = intval($this->ask("Введите id потока:"));
 
         $selectedCourse = InternshipCourse::find($selectedCourseId);
         if (!$selectedCourse) {
             dd("Выбранный курс не существует");
         }
+        $amountLeft = intval($this->ask("Укажите кол-во ключей"));
 
-        $registerKey = RegistrationKey::create([
-            "key" => str_random(20),
-            "role" => $allowedRoles[$selectedRoleKey],
-            "course_id" => $selectedCourse->id
-        ]);
+        $keys = collect();
 
-        $registerLink = url("/register?") . http_build_query([
-            "register_key" => $registerKey->key
-                ]);
-        $this->info("Register Link:\n" . $registerLink);
-        $this->info("Register Key:\n" . $registerKey->key);
+        while ($amountLeft > 0) {
+            $amountLeft--;
+            $keys->push(RegistrationKey::create([
+                "key" => str_random(25),
+                "role" => $allowedRoles[$selectedRoleKey],
+                "course_id" => $selectedCourse->id
+            ]));
+        }
+
+        foreach ($keys as $index => $registerKey) {
+            $this->info("Ключ №" . $registerKey->id);
+            $this->info("Ключ:\n" . $registerKey->key . "\n");
+        }
     }
 }
