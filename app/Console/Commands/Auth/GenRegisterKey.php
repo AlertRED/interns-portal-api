@@ -24,14 +24,14 @@ class GenRegisterKey extends Command
      *
      * @var string
      */
-    protected $signature = 'auth:gen_register_key';
+    protected $signature = 'auth:gen_register_keys';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Генерация ключа для регистрации вручную';
+    protected $description = 'Генерация ключей для регистрации вручную';
 
     public function handle()
     {
@@ -74,8 +74,8 @@ class GenRegisterKey extends Command
         }
 
         foreach ($keys as $index => $registerKey) {
-            $this->info("Ключ №" . $registerKey->id);
-            $this->info("Ключ:\n" . $registerKey->key . "\n");
+            $this->info("Ключ №" . $registerKey->id . "\n");
+            $this->info($registerKey->key . "\n");
         }
     }
 }
