@@ -15,7 +15,6 @@ class UserRepository
      */
     public static function create(array $data) {
         $course = InternshipCourse::find($data["course_id"]);
-        InternHomeworkUtils::syncCourseHomeworks($course);
         InternHomeworkSync::syncInternsHomeworks($course->users);
         return User::create($data);
     }
