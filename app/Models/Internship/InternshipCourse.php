@@ -22,6 +22,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Internship\InternshipCourse whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Internship\InternshipCourse whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Homework\Homework[] $homeworks
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Internship\InternshipCourse newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Internship\InternshipCourse newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Internship\InternshipCourse query()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
  */
 class InternshipCourse extends Model
 {
@@ -34,4 +39,19 @@ class InternshipCourse extends Model
      * @var array
      */
     protected $guarded = ["id"];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function homeworks()
+    {
+        return $this->hasMany("App\Models\Homework\Homework", "course_id");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users() {
+        return $this->hasMany("App\User", "course_id");
+    }
 }

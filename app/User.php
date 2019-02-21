@@ -41,6 +41,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property-read \App\Models\Internship\InternshipCourse $course
  * @property-read \App\Models\Internship\CourseLead $courseLead
  * @property-read \App\Models\Homework\InternHomework $homeworks
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
  */
 class User extends Authenticatable
 {

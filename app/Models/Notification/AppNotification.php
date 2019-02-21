@@ -32,6 +32,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Notification\AppNotification whereUri($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Notification\AppNotification whereUserId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Notification\AppNotification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Notification\AppNotification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Notification\AppNotification query()
  */
 class AppNotification extends Model
 {
