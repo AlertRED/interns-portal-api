@@ -8,15 +8,12 @@
 
 namespace App\Support\InternHomework\Util;
 
-use App\Models\Homework\Homework;
 use App\Models\Homework\InternHomework;
-use App\Models\Internship\InternshipCourse;
 use App\Repositories\Homework\InternHomeworkRepository;
 use App\Support\Enums\HomeworkStatus;
 use App\Support\Enums\UserType;
 use App\Support\Notifications\Notifiers\EmployeeNotifier;
 use App\Support\Notifications\Notifiers\InternNotifier;
-use App\User;
 
 class InternHomeworkUtils
 {
@@ -67,36 +64,5 @@ class InternHomeworkUtils
         }
 
         return $homework;
-    }
-
-    /**
-     * @param InternshipCourse $course
-     */
-    public static function syncCourseHomeworks(InternshipCourse $course) {
-        foreach (Homework::where("course_id", $course->id)->get() as $homework) {
-            self::assignHomeworkToInterns($homework);
-        }
-    }
-
-    /**
-     * @param Homework $homework
-     */
-    public static function assignHomeworkToInterns(Homework $homework) {
-        $interns = User::where("role", UserType::getKey(UserType::User))
-            ->where("course_id", $homework->course_id)
-            ->get();
-
-        foreach ($interns as $intern) {
-            $internHomework = InternHomework::where("user_id", $intern->id)
-                ->where("homework_id", $homework->id)
-                ->first();
-            if (!$internHomework && $intern->role == UserType::getKey(UserType::User)) {
-                InternHomework::create([
-                    "user_id" => $intern->id,
-                    "homework_id" => $homework->id,
-                    "status" => InternHomework::getDefaultStatus()
-                ]);
-            }
-        }
     }
 }

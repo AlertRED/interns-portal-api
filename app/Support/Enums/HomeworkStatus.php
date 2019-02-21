@@ -12,11 +12,11 @@ use BenSampo\Enum\Enum;
 
 final class HomeworkStatus extends Enum
 {
-    const Failed = -1;
-    const NotStarted = 0;
-    const InProgress = 1;
-    const OnReview = 2;
-    const Finished = 3;
+    const Failed = "Failed";
+    const NotStarted = "NotStarted";
+    const InProgress = "InProgress";
+    const OnReview = "OnReview";
+    const Finished = "Finished";
 
     /**
      * @param string $status
