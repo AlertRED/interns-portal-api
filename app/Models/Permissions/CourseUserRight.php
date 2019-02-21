@@ -30,6 +30,9 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \App\Models\Internship\InternshipCourse $course
  * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permissions\CourseUserRight newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permissions\CourseUserRight newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permissions\CourseUserRight query()
  */
 class CourseUserRight extends Model
 {

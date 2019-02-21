@@ -10,7 +10,7 @@ namespace App\Repositories\Homework;
 
 use App\Models\Homework\Homework;
 use App\Models\Internship\InternshipCourse;
-use App\Support\InternHomework\Util\InternHomeworkUtils;
+use App\Support\Sync\Homework\InternHomeworkSync;
 
 class HomeworkRepository
 {
@@ -21,9 +21,8 @@ class HomeworkRepository
     public static function create(array $data) {
         $homework = Homework::create($data);
 
-        InternHomeworkUtils::assignHomeworkToInterns(
-            $homework
-        );
+        $course = InternshipCourse::find($data["course_id"]);
+        InternHomeworkSync::syncInternsHomeworks($course->users);
 
         return $homework;
     }

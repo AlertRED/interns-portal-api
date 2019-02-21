@@ -26,6 +26,9 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \App\Models\Internship\InternshipCourse $course
  * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Internship\CourseLead newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Internship\CourseLead newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Internship\CourseLead query()
  */
 class CourseLead extends Model
 {

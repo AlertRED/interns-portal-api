@@ -31,6 +31,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereRole($value)
  * @property int|null $course_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey whereCourseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\RegistrationKey query()
  */
 class RegistrationKey extends Model
 {

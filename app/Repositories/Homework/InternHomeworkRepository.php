@@ -13,6 +13,22 @@ use App\Models\Homework\InternHomework;
 class InternHomeworkRepository
 {
     /**
+     * @param array $data
+     * @return InternHomework|\Illuminate\Database\Eloquent\Model
+     */
+    public static function firstOrCreate(array $data) {
+        return InternHomework::firstOrCreate($data);
+    }
+
+    /**
+     * @param array $data
+     * @return InternHomework|\Illuminate\Database\Eloquent\Model
+     */
+    public static function create(array $data) {
+        return InternHomework::create($data);
+    }
+
+    /**
      * @param InternHomework $item
      * @param array $data
      * @return InternHomework

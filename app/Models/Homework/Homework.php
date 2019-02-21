@@ -33,6 +33,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $start_date
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework whereStartDate($value)
  * @property-read \App\Models\Internship\InternshipCourse $course
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Homework\Homework query()
  */
 class Homework extends Model
 {
