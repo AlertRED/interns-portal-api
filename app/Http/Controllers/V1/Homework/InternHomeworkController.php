@@ -80,6 +80,7 @@ class InternHomeworkController extends Controller
      */
     public function getUserHomeworks($id)
     {
+        $me = User::find(auth("api")->user()->id);
         $user = User::find($id);
 
         if (!$user) {
@@ -87,7 +88,7 @@ class InternHomeworkController extends Controller
         }
 
         if (!PermissionPool::ifUserHasCoursePermission(
-            $user, $user->course, UserCourseRight::ViewHomeworks
+            $me, $user->course, UserCourseRight::ViewHomeworks
         )) {
             abort(403, __("homeworks.homework.no_view_access"));
         }
