@@ -11,6 +11,22 @@
     {
       "name": "user",
       "description": "Operations about user",
+    },
+    {
+      "name": "homework",
+      "description": "Operations about homeworks",
+    },
+    {
+      "name": "internHomework",
+      "description": "Operations about intern homeworks",
+    },
+    {
+      "name": "courses",
+      "description": "Operations about user courses",
+    },
+    {
+      "name": "permissions",
+      "description": "Operations about user permissions [Admin only]",
     }
   ],
   "schemes": [
@@ -62,10 +78,11 @@
         }
       },
     },
+    
     "/user/{id}/homeworks/avg_score": {
       "get": {
         "tags": [
-          "user"
+          "internHomework"
         ],
         "summary": "Get user average homework score",
         "operationId": "getUserHomeworkAvgScore",
@@ -110,7 +127,7 @@
     "/user/{userId}/homework/{internHomeworkId}/score": {
       "patch": {
         "tags": [
-          "user"
+          "internHomework"
         ],
         "operationId": "setUserHomeworkScore",
         "produces": [
@@ -129,6 +146,103 @@
             "name": "internHomeworkId",
             "in": "path",
             "description": "InternHomework ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "score",
+            "in": "query",
+            "description": "score between 0 and 5",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "average_score": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              },
+            }
+          },
+        }
+      },
+    },
+    
+    "/courses/permissions/": {
+      "get": {
+        "tags": [
+          "permissions"
+        ],
+        "operationId": "getAllCoursesPermissions",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "permissions": {
+                      "type": "object",
+                      "properties": {
+                        "ViewHomeworks": {
+                          "type": "string",
+                          "example": "Просмотр домашних заданий",
+                        },
+                        "EditHomeworks": {
+                          "type": "string",
+                          "example": "Редактирование домашних заданий",
+                        },
+                        "ChangeHomeworkStatuses": {
+                          "type": "string",
+                          "example": "Смена статусов домашних заданий",
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+            }
+          },
+        }
+      },
+    },
+    "/user/{userId}/permissions/": {
+      "get": {
+        "tags": [
+          "permissions"
+        ],
+        "operationId": "getUserPermissions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -305,6 +419,6 @@
           "example": "Front-end 2"
         },
       },
-    },
+    }
   }
 }
