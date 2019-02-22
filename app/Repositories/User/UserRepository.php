@@ -3,7 +3,6 @@
 namespace App\Repositories\User;
 
 use App\Models\Internship\InternshipCourse;
-use App\Support\InternHomework\Util\InternHomeworkUtils;
 use App\Support\Sync\Homework\InternHomeworkSync;
 use App\User;
 
