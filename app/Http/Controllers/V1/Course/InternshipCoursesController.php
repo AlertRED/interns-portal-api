@@ -73,10 +73,6 @@ class InternshipCoursesController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getUserCoursePermissions(InternshipCourse $course, User $user) {
-        if ($user->role !== UserType::Employee) {
-            abort(422, "Пользоваель должен быть сотрудником");
-        }
-
         return response()->json ([
             "success" => true,
             "data" => [

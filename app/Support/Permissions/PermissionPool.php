@@ -41,9 +41,7 @@ class PermissionPool
             $myRights[$right] = $userRight ? boolval($userRight->allowed) : false;
         }
 
-        $allAllowed = $user->role == UserType::Admin || $isCourseLead;
-
-        if ($allAllowed) {
+        if ($user->role == UserType::Admin || $isCourseLead) {
             foreach ($myRights as $key => $right) {
                 $myRights[$key] = true;
             }
