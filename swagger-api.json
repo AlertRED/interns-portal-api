@@ -229,12 +229,13 @@
         }
       },
     },
-    "/user/{userId}/permissions/": {
+    
+    "/course/{courseId}/user/{userId}/permissions/": {
       "get": {
         "tags": [
           "permissions"
         ],
-        "operationId": "getUserPermissions",
+        "operationId": "getUserCoursePermissions",
         "produces": [
           "application/json"
         ],
@@ -248,9 +249,9 @@
             "format": "int64"
           },
           {
-            "name": "score",
-            "in": "query",
-            "description": "score between 0 and 5",
+            "name": "courseId",
+            "in": "path",
+            "description": "Internship Course ID",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -268,8 +269,84 @@
                 "data": {
                   "type": "object",
                   "properties": {
-                    "average_score": {
-                      "$ref": "#/definitions/InternHomework"
+                    "permissions": {
+                      "type": "object",
+                      "properties": {
+                        "ViewHomeworks": {
+                          "type": "boolean",
+                          "example": true,
+                        },
+                        "EditHomeworks": {
+                          "type": "boolean",
+                          "example": false,
+                        },
+                        "ChangeHomeworkStatuses": {
+                          "type": "boolean",
+                          "example": false,
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+            }
+          },
+        }
+      },
+      "patch": {
+        "tags": [
+          "permissions"
+        ],
+        "operationId": "updateUserCoursePermissions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "courseId",
+            "in": "path",
+            "description": "Internship Course ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "permissions": {
+                      "type": "object",
+                      "properties": {
+                        "ViewHomeworks": {
+                          "type": "boolean",
+                          "example": true,
+                        },
+                        "EditHomeworks": {
+                          "type": "boolean",
+                          "example": false,
+                        },
+                        "ChangeHomeworkStatuses": {
+                          "type": "boolean",
+                          "example": false,
+                        }
+                      }
                     }
                   }
                 }
@@ -280,6 +357,7 @@
       },
     },
   },
+  
   "definitions": {
     "User": {
       "type": "object",
