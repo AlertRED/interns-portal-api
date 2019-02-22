@@ -138,31 +138,48 @@ class HomeworkController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function edit(Homework $homework, Request $request)
-    {
+    public function edit(Homework $homework, Request $request) {
         $request->validate([
-            "name"      => "string|min:4|max:255",
-            "number"    => "integer",
-            "url"       => "string|min:4|max:255",
-            "deadline"  => "string",
+            "name" => "string|min:4|max:255",
+            "number" => "integer",
+            "url" => "string|min:4|max:255",
+            "deadline" => "string",
+            "start_date" => "string",
         ]);
 
+        $dates = [];
+
+        $me = User::find(auth()->user()->id);
+
+        try {
+            $dates["deadline"] = Carbon::parse($request->deadline);
+        } catch (\Exception $e) {
+            abort(422, "Неверный формат дедлайна (deadline)");
+        }
+
+        try {
+            $dates["start_date"] = Carbon::parse($request->start_date);
+        } catch (\Exception $e) {
+            abort(422, "Неверный формат даты старта (start_date)");
+        }
+
         if (!PermissionPool::ifUserHasCoursePermission(
-            User::find(auth()->user()->id), $homework->course, UserCourseRight::EditHomeworks
+            $me, $homework->course, UserCourseRight::EditHomeworks
         )) {
             abort(403, __("homeworks.homework.no_edit_access"));
         }
 
         $homework->update([
-            "name"      => $request->name ? $request->name : $homework->name,
-            "number"    => $request->number ? $request->number : $homework->number,
-            "url"       => $request->url ? $request->url : $homework->url,
-            "deadline"  => $request->deadline ? Carbon::parse($request->deadline) : $homework->deadline
+            "name" => $request->name ? $request->name : $homework->name,
+            "number" => $request->number ? $request->number : $homework->number,
+            "url" => $request->url ? $request->url : $homework->url,
+            "start_date" => $request->start_date ? $dates["start_date"] : $homework->start_date,
+            "deadline" => $request->deadline ? $dates["deadline"] : $homework->deadline
         ]);
 
         return response()->json([
             "success" => true,
-            "data"    => [
+            "data" => [
                 "homework" => HomeworkTransformer::transformItem($homework)
             ]
         ]);
