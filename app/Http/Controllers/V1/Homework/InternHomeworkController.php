@@ -198,23 +198,25 @@ class InternHomeworkController extends Controller
             abort(400, "Домашняя работа не принадлежит пользователю");
         }
 
-        if (!PermissionPool::ifUserHasCoursePermission(
+        if (PermissionPool::ifUserHasCoursePermission(
             $me, $user->course, UserCourseRight::ChangeHomeworkStatuses
         )) {
-            abort(403, __("homeworks.homework.no_change_status_access"));
-        }
-
-        if (isset($request->status)) {
-            $sourceStatus = HomeworkStatusesLang::getSource($request->status);
-            if (!$sourceStatus || !HomeworkStatus::isStatusExists($sourceStatus)) {
-                abort(400, "Неверный статус");
+            if (isset($request->status)) {
+                $sourceStatus = HomeworkStatusesLang::getSource($request->status);
+                if (!$sourceStatus || !HomeworkStatus::isStatusExists($sourceStatus)) {
+                    abort(400, "Неверный статус");
+                }
+                $homework = InternHomeworkUtils::changeStatus($me, $homework, $sourceStatus);
             }
-            $homework = InternHomeworkUtils::changeStatus(auth("api")->user(), $homework, $sourceStatus);
         }
 
-        $homework = InternHomeworkRepository::update($homework, [
-            "github_uri" => isset($request->github_uri) ? $request->github_uri : $homework->github_uri,
-        ]);
+        if (PermissionPool::ifUserHasCoursePermission(
+            $me, $user->course, UserCourseRight::EditHomeworks
+        )) {
+            $homework = InternHomeworkRepository::update($homework, [
+                "github_uri" => isset($request->github_uri) ? $request->github_uri : $homework->github_uri,
+            ]);
+        }
 
         return response()->json([
             "success" => true,

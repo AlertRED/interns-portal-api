@@ -39,7 +39,7 @@ class InternHomeworkUtils
      */
     public static function changeStatus($me, InternHomework $homework, string $newStatus, bool $force = false) {
         $allowedRoles = [
-            UserType::getKey(UserType::Employee)
+            UserType::Employee, UserType::Admin
         ];
 
         $prevStatus = $homework->status;
