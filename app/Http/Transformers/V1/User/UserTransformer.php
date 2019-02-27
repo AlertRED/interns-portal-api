@@ -8,6 +8,7 @@
 namespace App\Http\Transformers\V1\User;
 
 use App\Models\Internship\InternshipCourse;
+use App\Support\User\Util\UserUtils;
 use App\User;
 use Illuminate\Support\Collection;
 use League\Fractal\TransformerAbstract;
@@ -30,6 +31,7 @@ class UserTransformer extends TransformerAbstract
             'last_name' => $user->last_name,
             'course' => $course ? $course->course : null,
             'role' => $user->role,
+            'avg_score' => UserUtils::getUserAverageHomeworkScore($user),
             'register_date' => (string) $user->created_at
         ];
     }

@@ -41,7 +41,7 @@ class InternHomeworkTransformer extends TransformerAbstract
             'homework' => HomeworkTransformer::transformItem($item->homework, null, $this->hideUrl),
             'github_uri' => $item->github_uri,
             'status' => HomeworkStatusesLang::getTranslated($item->status),
-            'score' => (int) $item->score,
+            'score' => (float) $item->score,
             'started_at' => (string) $item->started_at,
             'created_at' => (string) $item->created_at
         ];

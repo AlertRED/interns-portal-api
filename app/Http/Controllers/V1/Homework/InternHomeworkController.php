@@ -9,7 +9,6 @@
 namespace App\Http\Controllers\V1\Homework;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\InternHomework\SetHomeworkScore;
 use App\Http\Transformers\V1\Homework\InternHomeworkTransformer;
 use App\Models\Homework\InternHomework;
 use App\Repositories\Homework\InternHomeworkRepository;
@@ -17,8 +16,8 @@ use App\Support\Enums\HomeworkStatus;
 use App\Support\Enums\UserCourseRight;
 use App\Support\InternHomework\Util\InternHomeworkUtils;
 use App\Support\Lang\HomeworkStatusesLang;
-use App\Support\Notifications\Notifiers\EmployeeNotifier;
 use App\Support\Permissions\PermissionPool;
+use App\Support\User\Util\UserUtils;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -231,22 +230,21 @@ class InternHomeworkController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAvgHomeworkScore(User $user) {
-        $items = $user->homeworks;
         return response()->json([
             "success" => true,
             "data" => [
-                "average_score" => $items->sum("score") / $items->count()
+                "average_score" => UserUtils::getUserAverageHomeworkScore($user)
             ]
         ]);
     }
 
     /**
-     * @param SetHomeworkScore $request
+     * @param Request $request
      * @param User $user
      * @param InternHomework $homework
      * @return \Illuminate\Http\JsonResponse
      */
-    public function setHomeworkScore(SetHomeworkScore $request, User $user, InternHomework $homework) {
+    public function setHomeworkScore(Request $request, User $user, InternHomework $homework) {
         $me = User::find(auth("api")->user()->id);
 
         if (!PermissionPool::ifUserHasCoursePermission(
@@ -259,7 +257,7 @@ class InternHomeworkController extends Controller
             abort(403, __("homeworks.homework.invalid_status"));
         }
 
-        $homework->score = $request->score;
+        $homework->score = floatval($request->score);
         $homework->save();
 
         return response()->json([
