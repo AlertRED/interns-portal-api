@@ -263,14 +263,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "User ID",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
         ],
         "responses": {
           "200": {
@@ -295,6 +287,266 @@
         }
       }
     },
+
+
+    "/user/{id}/homeworks/avg_score": {
+      "get": {
+        "tags": [
+          "homework"
+        ],
+        "summary": "Get user average homework score",
+        "operationId": "getUserHomeworkAvgScore",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "average_score": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 2.5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{user}/homeworks": {
+      "get": {
+        "tags": [
+          "homework"
+        ],
+        "summary": "Get user homeworks",
+        "operationId": "getUserHomeworks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": "array",
+                    "homeworks": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Пользователь не найден"
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "homeworks.homework.no_view_access"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{user}/homework/{intern_homework}": {
+      "get": {
+        "tags": [
+          "internHomework"
+        ],
+        "summary": "Get user homework",
+        "operationId": "getUserHomework",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "body",
+            "description": "Status of the Intern Homework",
+            "minimum": 4,
+            "maximum": 255,
+            "type": "string"
+          },{
+            "name": "github_uri",
+            "in": "body",
+            "description": "Github uri of the Intern Homework",
+            "minimum": 4,
+            "maximum": 255,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "homework": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Пользователь не найден"
+              }
+            }
+          },
+          "400": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Домашняя работа не принадлежит пользователю"
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Нет доступа"
+              },
+              " ":{
+                "message": "homeworks.homework.no_view_access"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "internHomework"
+        ],
+        "summary": "Edit user homework",
+        "operationId": "editUserHomework",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "homework": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Домашняя работа не принадлежит пользователю"
+              },
+              " ":{
+                "message": "Неверный статус"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{user}/homework/{intern_homework}/score": {
+      "patch": {
+        "tags": [
+          "internHomework"
+        ],
+        "summary": "Edit user homework",
+        "operationId": "setHomeworkScore",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "homework": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "homeworks.homework.invalid_status"
+              },
+              " ":{
+                "message": "homeworks.homework.no_change_status_access"
+              }
+            }
+          }
+        }
+      }
+    },
+
+
     "/interns": {
       "get": {
         "tags": [
@@ -308,19 +560,13 @@
         ],
         "parameters": [
           {
-            "name": "api_token",
-            "in": "path",
-            "description": "Api token of user",
-            "required": true,
-            "type": "string",
-            "format": "string"
-          },
-          {
             "name": "course",
             "in": "body",
             "description": "Name of course",
             "required": true,
             "type": "string",
+            "minimum": 1,
+            "maximum": 200,
             "format": "string"
           }
         ],
@@ -369,14 +615,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "api_token",
-            "in": "path",
-            "description": "Api token of user",
-            "required": true,
-            "type": "string",
-            "format": "string"
-          }
         ],
         "responses": {
           "200": {
@@ -411,14 +649,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "api_token",
-            "in": "path",
-            "description": "Api token of user",
-            "required": true,
-            "type": "string",
-            "format": "string"
-          },
           {
             "name": "login",
             "in": "body",
@@ -540,13 +770,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "intern_homework",
-            "in": "path",
-            "description": "My homework id",
-            "required": true,
-            "type": "integer"
-          }
         ],
         "responses": {
           "200": {
@@ -593,23 +816,15 @@
         ],
         "summary": "Set my homework",
         "description": "description here.",
-        "operationId": "set",
+        "operationId": "edit",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "intern_homework",
-            "in": "path",
-            "description": "My homework id",
-            "required": true,
-            "type": "integer"
-          },
-          {
             "name": "github_uri",
             "in": "path",
             "description": "My rep uri",
-            "required": true,
             "type": "string",
             "minimum": 4,
             "maximum": 255
@@ -651,333 +866,7 @@
       }
     },
 
-    "/user/{id}/homeworks/avg_score": {
-      "get": {
-        "tags": [
-          "homework"
-        ],
-        "summary": "Get user average homework score",
-        "operationId": "getUserHomeworkAvgScore",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "User ID",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "success",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean"
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "average_score": {
-                      "type": "number",
-                      "format": "float",
-                      "example": 2.5
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/{user}/homeworks": {
-      "get": {
-        "tags": [
-          "homework"
-        ],
-        "summary": "Get user homeworks",
-        "operationId": "getUserHomeworks",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "User ID",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "success",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean"
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "type": "array",
-                    "homeworks": {
-                      "$ref": "#/definitions/InternHomework"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "wrong",
-            "examples": {
-              "":{
-                "message": "Пользователь не найден"
-              }
-            }
-          },
-          "403": {
-            "description": "wrong",
-            "examples": {
-              "":{
-                "message": "homeworks.homework.no_view_access"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/{user}/homework/{intern_homework}": {
-      "get": {
-        "tags": [
-          "internHomework"
-        ],
-        "summary": "Get user homework",
-        "operationId": "getUserHomework",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "User ID",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "intern_homework",
-            "in": "path",
-            "description": "User homework id",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "success",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean"
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "homework": {
-                      "$ref": "#/definitions/InternHomework"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "wrong",
-            "examples": {
-              "":{
-                "message": "Пользователь не найден"
-              }
-            }
-          },
-          "400": {
-            "description": "wrong",
-            "examples": {
-              "":{
-                "message": "Домашняя работа не принадлежит пользователю"
-              }
-            }
-          },
-          "403": {
-            "description": "wrong",
-            "examples": {
-              "":{
-                "message": "Нет доступа"
-              },
-              " ":{
-                "message": "homeworks.homework.no_view_access"
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "internHomework"
-        ],
-        "summary": "Edit user homework",
-        "operationId": "editUserHomework",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "User ID",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "intern_homework",
-            "in": "path",
-            "description": "User homework id",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "status",
-            "in": "path",
-            "description": "Status of the homework",
-            "type": "string",
-            "minimum": 4,
-            "maximum": 255
-          },
-          {
-            "name": "github_uri",
-            "in": "path",
-            "description": "Github uri of the homework",
-            "type": "string",
-            "minimum": 4,
-            "maximum": 255
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "success",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean"
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "homework": {
-                      "$ref": "#/definitions/InternHomework"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "wrong",
-            "examples": {
-              "":{
-                "message": "Домашняя работа не принадлежит пользователю"
-              },
-              " ":{
-                "message": "Неверный статус"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/{user}/homework/{intern_homework}/score": {
-      "patch": {
-        "tags": [
-          "internHomework"
-        ],
-        "summary": "Edit user homework",
-        "operationId": "editUserHomework",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "User ID",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "intern_homework",
-            "in": "path",
-            "description": "User homework id",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "score",
-            "in": "path",
-            "description": "Score for the homework",
-            "type": "int"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "success",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean"
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "homework": {
-                      "$ref": "#/definitions/InternHomework"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "wrong",
-            "examples": {
-              "":{
-                "message": "homeworks.homework.invalid_status"
-              },
-              " ":{
-                "message": "homeworks.homework.no_change_status_access"
-              }
-            }
-          }
-        }
-      }
-    },
+
 
     "/notifications/": {
       "get": {
@@ -1003,6 +892,7 @@
                 "data": {
                   "type": "object",
                   "properties": {
+                    "type": "array",
                     "notifications": {
                       "$ref": "#/definitions/Notification"
                     }
@@ -1063,8 +953,9 @@
                 "data": {
                   "type": "object",
                   "properties": {
+                    "type": "array",
                     "average_score": {
-                      "$ref": "#/definitions/permissions"
+                      "$ref": "#/definitions/Permission"
                     }
                   }
                 }
@@ -1119,7 +1010,7 @@
         }
       }
     },
-    "/homework/": {
+    "/homework": {
       "post": {
         "tags": [
           "homework"
@@ -1494,8 +1385,8 @@
                 "data": {
                   "type": "object",
                   "properties": {
-                    "homework": {
-                      "$ref": "#/definitions/Homework"
+                    "course": {
+                      "$ref": "#/definitions/Course"
                     }
                   }
                 }
@@ -1527,7 +1418,7 @@
           "permissions"
         ],
         "operationId": "getUserCoursePermissions",
-        "summary": "Get permissions by User and Intern",
+        "summary": "Get permissions of User and Intern",
         "produces": [
           "application/json"
         ],
@@ -1775,6 +1666,12 @@
           "example": 3
         }
       }
+    },
+    "Course": {
+      "type": "object"
+    },
+    "Notification": {
+      "type": "object"
     }
   }
 }
