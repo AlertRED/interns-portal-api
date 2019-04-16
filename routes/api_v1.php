@@ -85,13 +85,11 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
             });
 
             /* Homeworks */
-
-            Route::get('/homeworks', 'Homework\HomeworkController@getAll');
+                Route::get('/homeworks', 'Homework\HomeworkController@getAll');
 
             Route::group([
                 'prefix' => 'homework'
             ], function () {
-
                 Route::post('/', 'Homework\HomeworkController@new');
                 Route::get('/{homework}', 'Homework\HomeworkController@get');
                 Route::patch('/{homework}', 'Homework\HomeworkController@edit');
