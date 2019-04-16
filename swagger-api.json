@@ -78,7 +78,7 @@
         }
       },
     },
-    
+
     "/user/{id}/homeworks/avg_score": {
       "get": {
         "tags": [
@@ -182,7 +182,7 @@
         }
       },
     },
-    
+
     "/courses/permissions/": {
       "get": {
         "tags": [
@@ -229,7 +229,7 @@
         }
       },
     },
-    
+
     "/course/{courseId}/user/{userId}/permissions/": {
       "get": {
         "tags": [

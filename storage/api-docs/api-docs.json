@@ -1,0 +1,1353 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Interns portal API"
+  },
+  "host": "api.learn.2-up.ru",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Operations about authorize"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    },
+    {
+      "name": "homework",
+      "description": "Operations about homeworks"
+    },
+    {
+      "name": "internHomework",
+      "description": "Operations about intern homeworks"
+    },
+    {
+      "name": "courses",
+      "description": "Operations about user courses"
+    },
+    {
+      "name": "permissions",
+      "description": "Operations about user permissions [Admin only]"
+    },
+    {
+      "name": "me",
+      "description": "Operations about user profile"
+    },
+    {
+      "name": "interns",
+      "description": "Operations with interns"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+
+    "/login": {
+    "post": {
+      "tags": [
+        "auth"
+      ],
+      "summary": "Login user",
+      "description": "description here.",
+      "operationId": "login",
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [
+        {
+          "name": "login",
+          "in": "body",
+          "description": "User login",
+          "required": true,
+          "minimum": 3,
+          "maximum": 255,
+          "type": "string"
+        },
+        {
+          "name": "password",
+          "in": "body",
+          "description": "User password",
+          "required": true,
+          "minimum": 4,
+          "maximum": 50,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "success",
+          "examples": {
+            "": {
+              "success": true,
+              "data": {
+                "api_token": "123"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "wrong",
+          "examples": {
+            "": {
+              "message": "Пользователь не существует"
+            }
+          }
+        },
+        "401": {
+          "description": "wrong",
+          "examples": {
+            "": {
+              "message": "Неверный логин / пароль"
+            }
+          }
+        }
+      }
+    }
+  },
+    "/regiser": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register user",
+        "description": "description here.",
+        "operationId": "register",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "body",
+            "description": "User login",
+            "required": true,
+            "unique": true,
+            "minimum": 3,
+            "maximum": 255,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "User email",
+            "unique": true,
+            "required": true,
+            "maximum": 255,
+            "format": "email",
+            "type": "string"
+          },
+          {
+            "name": "first_name",
+            "in": "body",
+            "description": "User first_name",
+            "required": true,
+            "minimum": 3,
+            "maximum": 100,
+            "type": "string"
+          },{
+            "name": "last_name",
+            "in": "body",
+            "description": "User last_name",
+            "required": true,
+            "minimum": 3,
+            "maximum": 100,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "User password",
+            "required": true,
+            "minimum": 4,
+            "maximum": 50,
+            "type": "string"
+          },
+          {
+            "name": "register_key",
+            "in": "body",
+            "description": "User register key",
+            "required": true,
+            "minimum": 4,
+            "maximum": 50,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "examples": {
+              "": {
+                "success": true,
+                "data": {
+                  "api_token": "123"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "": {
+                "message": "Неверный ключ регистрации"
+              },
+              " ": {
+                "message": "Ключ уже использован"
+              }
+
+            }
+          }
+        }
+      }
+    },
+    "/check_api_token": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Check token of user",
+        "description": "description here.",
+        "operationId": "checkApiToken",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_token",
+            "in": "body",
+            "description": "User api token",
+            "required": true,
+            "minimum": 4,
+            "maximum": 50,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "examples": {
+              "": {
+                "success": true
+              }
+            }
+          },
+          "401": {
+            "description": "wrong",
+            "examples": {
+              "": {
+                "success": false
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user by ID",
+        "description": "description here.",
+        "operationId": "getUserById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/definitions/User"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/interns": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get interns",
+        "description": "description here.",
+        "operationId": "getInterns",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_token",
+            "in": "path",
+            "description": "Api token of user",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "course",
+            "in": "body",
+            "description": "Name of course",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": "array",
+                    "users": {
+                      "$ref": "#/definitions/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Курс 123 не найден"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "me/profile_info": {
+      "get": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Get profile info",
+        "description": "description here.",
+        "operationId": "getMyProfileInfo",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_token",
+            "in": "path",
+            "description": "Api token of user",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/definitions/User"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Get profile info",
+        "description": "description here.",
+        "operationId": "editMyProfileInfo",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_token",
+            "in": "path",
+            "description": "Api token of user",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "login",
+            "in": "body",
+            "description": "User login",
+            "unique": true,
+            "minimum": 3,
+            "maximum": 255,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "description": "User email",
+            "unique": true,
+            "maximum": 255,
+            "format": "email",
+            "type": "string"
+          },
+          {
+            "name": "first_name",
+            "in": "body",
+            "description": "User first_name",
+            "minimum": 3,
+            "maximum": 100,
+            "type": "string"
+          },{
+            "name": "last_name",
+            "in": "body",
+            "description": "User last_name",
+            "minimum": 3,
+            "maximum": 100,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "User password",
+            "minimum": 4,
+            "maximum": 50,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/definitions/User"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "me/homeworks": {
+      "get": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Get my homeworks",
+        "description": "description here.",
+        "operationId": "getMyHomeworks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "active",
+            "in": "path",
+            "description": "Status of the homework",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": "array",
+                    "homeworks": {
+                      "$ref": "#/definitions/Homework"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "me/homework/{intern_homework}": {
+      "get": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Get my homework",
+        "description": "description here.",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "intern_homework",
+            "in": "path",
+            "description": "My homework id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": "array",
+                    "homework": {
+                      "$ref": "#/definitions/Homework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Домашняя работа не найдена"
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Нет доступа"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Set my homework",
+        "description": "description here.",
+        "operationId": "set",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "intern_homework",
+            "in": "path",
+            "description": "My homework id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "github_uri",
+            "in": "path",
+            "description": "My rep uri",
+            "required": true,
+            "type": "string",
+            "minimum": 4,
+            "maximum": 255
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": "array",
+                    "homework": {
+                      "$ref": "#/definitions/Homework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Нет доступа"
+              },
+              " ":{
+                "message": "Вы не можете редактировать домашнюю работу с текущим статусом: Статус"
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/user/{id}/homeworks/avg_score": {
+      "get": {
+        "tags": [
+          "internHomework"
+        ],
+        "summary": "Get user average homework score",
+        "operationId": "getUserHomeworkAvgScore",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "average_score": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 2.5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{user}/homeworks": {
+      "get": {
+        "tags": [
+          "homework"
+        ],
+        "summary": "Get user homeworks",
+        "operationId": "getUserHomeworks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": "array",
+                    "homeworks": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Пользователь не найден"
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "homeworks.homework.no_view_access"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{user}/homework/{intern_homework}": {
+      "get": {
+        "tags": [
+          "homework"
+        ],
+        "summary": "Get user homework",
+        "operationId": "getUserHomework",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "intern_homework",
+            "in": "path",
+            "description": "User homework id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "homework": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Пользователь не найден"
+              }
+            }
+          },
+          "400": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Домашняя работа не принадлежит пользователю"
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Нет доступа"
+              },
+              " ":{
+                "message": "homeworks.homework.no_view_access"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "homework"
+        ],
+        "summary": "Edit user homework",
+        "operationId": "editUserHomework",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "intern_homework",
+            "in": "path",
+            "description": "User homework id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "description": "Status of the homework",
+            "type": "string",
+            "minimum": 4,
+            "maximum": 255
+          },
+          {
+            "name": "github_uri",
+            "in": "path",
+            "description": "Github uri of the homework",
+            "type": "string",
+            "minimum": 4,
+            "maximum": 255
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "homework": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "Домашняя работа не принадлежит пользователю"
+              },
+              " ":{
+                "message": "Неверный статус"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{user}/homework/{intern_homework}/score": {
+      "patch": {
+        "tags": [
+          "homework"
+        ],
+        "summary": "Edit user homework",
+        "operationId": "editUserHomework",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "intern_homework",
+            "in": "path",
+            "description": "User homework id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "score",
+            "in": "path",
+            "description": "Score for the homework",
+            "type": "int"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "homework": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "wrong",
+            "examples": {
+              "":{
+                "message": "homeworks.homework.invalid_status"
+              },
+              " ":{
+                "message": "homeworks.homework.no_change_status_access"
+              }
+            }
+          }
+        }
+      }
+    },
+
+
+    "/user/{userId}/homework/{internHomeworkId}/score": {
+      "patch": {
+        "tags": [
+          "internHomework"
+        ],
+        "operationId": "setUserHomeworkScore",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "internHomeworkId",
+            "in": "path",
+            "description": "InternHomework ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "score",
+            "in": "query",
+            "description": "score between 0 and 5",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "average_score": {
+                      "$ref": "#/definitions/InternHomework"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses/permissions/": {
+      "get": {
+        "tags": [
+          "permissions"
+        ],
+        "operationId": "getAllCoursesPermissions",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "permissions": {
+                      "type": "object",
+                      "properties": {
+                        "ViewHomeworks": {
+                          "type": "string",
+                          "example": "Просмотр домашних заданий"
+                        },
+                        "EditHomeworks": {
+                          "type": "string",
+                          "example": "Редактирование домашних заданий"
+                        },
+                        "ChangeHomeworkStatuses": {
+                          "type": "string",
+                          "example": "Смена статусов домашних заданий"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/user/{userId}/permissions/": {
+      "get": {
+        "tags": [
+          "permissions"
+        ],
+        "operationId": "getUserCoursePermissions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "courseId",
+            "in": "path",
+            "description": "Internship Course ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "permissions": {
+                      "type": "object",
+                      "properties": {
+                        "ViewHomeworks": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "EditHomeworks": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "ChangeHomeworkStatuses": {
+                          "type": "boolean",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "permissions"
+        ],
+        "operationId": "updateUserCoursePermissions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "courseId",
+            "in": "path",
+            "description": "Internship Course ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "permissions": {
+                      "type": "object",
+                      "properties": {
+                        "ViewHomeworks": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "EditHomeworks": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "ChangeHomeworkStatuses": {
+                          "type": "boolean",
+                          "example": false
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": [
+        "login",
+        "email"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        },
+        "login": {
+          "type": "string",
+          "example": "someuser"
+        },
+        "email": {
+          "type": "string",
+          "example": "someuser@mail.com"
+        },
+        "first_name": {
+          "type": "string",
+          "example": "John"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "role": {
+          "type": "string",
+          "example": "User",
+          "enum": [
+            "Banned",
+            "User",
+            "Employee",
+            "Admin"
+          ]
+        },
+        "course": {
+          "$ref": "#/definitions/InternshipCourse"
+        }
+      }
+    },
+    "InternHomework": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 12
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 12
+        },
+        "homework": {
+          "$ref": "#/definitions/Homework"
+        },
+        "github_uri": {
+          "type": "string",
+          "example": "Front-end 2"
+        },
+        "status": {
+          "type": "string",
+          "example": "Выполнено",
+          "enum": [
+            "Провалено",
+            "Не началось",
+            "В работе",
+            "На проверке",
+            "Выполнено"
+          ]
+        },
+        "score": {
+          "type": "integer",
+          "format": "int64",
+          "example": 3
+        }
+      }
+    },
+    "Homework": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 12
+        },
+        "name": {
+          "type": "string",
+          "example": "Front-end 2"
+        },
+        "number": {
+          "type": "number",
+          "format": "int64",
+          "example": 7
+        },
+        "url": {
+          "type": "string",
+          "example": "https://github.com/2UP/interns-portal-api/blob/master/README.md"
+        },
+        "course": {
+          "$ref": "#/definitions/InternshipCourse"
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-10-31 09:45:36"
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-10-31 09:45:36"
+        }
+      }
+    },
+    "InternshipCourse": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 12
+        },
+        "name": {
+          "type": "string",
+          "example": "Front-end 2"
+        }
+      }
+    }
+  }
+}

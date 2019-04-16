@@ -16,7 +16,6 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
 
     Route::post('/login', 'Auth\AuthController@login');
     Route::post('/register', 'Auth\AuthController@register');
-
     Route::get('/check_api_token', 'Auth\AuthController@checkApiToken');
 
     /*
@@ -30,9 +29,7 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
     ], function ()
     {
         Route::get('/homework_statuses', 'Homework\HomeworkController@getHomeworkStatuses');
-
         /* Current user actions */
-
         Route::group([
             'prefix' => 'me'
         ], function ()
@@ -72,7 +69,6 @@ Route::group(['prefix' => 'api/v1', 'as' => 'api.v1.'], function ()
         {
             /* Courses */
             Route::get('/courses', 'Course\InternshipCoursesController@all');
-
             /* Users */
             Route::get('/interns', 'User\UsersController@getInterns');
 
