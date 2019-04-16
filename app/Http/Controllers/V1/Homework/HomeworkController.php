@@ -81,7 +81,7 @@ class HomeworkController extends Controller
         try {
             $dates["start_date"] = Carbon::parse($request->start_date);
         } catch (\Exception $e) {
-            abort(422, "Неверный формат даты старта (datetime)");
+            abort(422, "Неверный формат даты старта (start_date)");
         }
 
         $course = InternshipCourse::where("course", $request->course)->first();
